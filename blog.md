@@ -1,11 +1,12 @@
 ---
 layout: default
-title: Home
+title: Blog
+permalink: /blog/
 ---
 
 <section class="mb-[80px] max-w-3xl">
   <p class="mb-4 text-xs font-bold uppercase tracking-[0.3em] text-on-surface-variant">{{ site.title }}</p>
-  <h1 class="mb-6 font-h1 text-h1 text-primary">Engineering notes, project logs, and thoughts worth keeping.</h1>
+  <h1 class="mb-6 font-h1 text-h1 text-primary">Blog</h1>
   <p class="max-w-2xl text-body-lg text-on-surface-variant">
     {{ site.description }}
   </p>
@@ -13,19 +14,15 @@ title: Home
 
 <section class="grid grid-cols-1 gap-6 md:grid-cols-12">
   <div class="md:col-span-4">
-    <h2 class="mb-4 font-h3 text-h3 text-primary">Recent Posts</h2>
+    <h2 class="mb-4 font-h3 text-h3 text-primary">All Posts</h2>
     <p class="text-body-md text-on-surface-variant">
-      A curated collection of technical writings and engineering reflections.
+      Articles are generated from Jekyll posts under <code>_posts/</code>. The list below is wired to the real collection.
     </p>
-    <a href="{{ '/blog/' | relative_url }}" class="mt-6 inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.16em] text-on-surface-variant transition-colors duration-200 hover:text-primary">
-      View all posts
-      <span class="material-symbols-outlined text-base">arrow_forward</span>
-    </a>
   </div>
   <div class="md:col-span-8">
     {% if site.posts.size > 0 %}
       <div class="space-y-4">
-        {% for post in site.posts limit:3 %}
+        {% for post in site.posts %}
           <article class="group border border-surface-container-high bg-surface-container-lowest p-6 transition-colors duration-200 hover:border-neutral-900 dark:hover:border-neutral-50">
             {% include post_breadcrumb.html post=post %}
             <div class="mb-3 flex flex-wrap items-center gap-3 text-xs font-bold uppercase tracking-[0.24em] text-on-surface-variant">

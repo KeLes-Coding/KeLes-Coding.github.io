@@ -114,7 +114,7 @@
         <a class="text-lg font-black tracking-tighter text-neutral-900 transition-opacity duration-200 hover:opacity-80 dark:text-neutral-50" href="{{ '/' | relative_url }}">{{ site.title | upcase | replace: " ", "_" }}</a>
         <div class="hidden items-center space-x-8 text-sm uppercase tracking-wider md:flex">
           <a class="{% if current_url == '/' %}border-b border-neutral-900 pb-1 font-bold text-neutral-900 dark:border-neutral-50 dark:text-neutral-50{% else %}text-neutral-400 transition-colors duration-200 hover:text-neutral-900 dark:text-neutral-600 dark:hover:text-neutral-50{% endif %}" href="{{ '/' | relative_url }}">Home</a>
-          <a class="text-neutral-400 transition-colors duration-200 hover:text-neutral-900 dark:text-neutral-600 dark:hover:text-neutral-50" href="{{ '/#posts' | relative_url }}">Blog</a>
+          <a class="{% if current_url == '/blog/' %}border-b border-neutral-900 pb-1 font-bold text-neutral-900 dark:border-neutral-50 dark:text-neutral-50{% else %}text-neutral-400 transition-colors duration-200 hover:text-neutral-900 dark:text-neutral-600 dark:hover:text-neutral-50{% endif %}" href="{{ '/blog/' | relative_url }}">Blog</a>
           <a class="{% if current_url == '/about/' %}border-b border-neutral-900 pb-1 font-bold text-neutral-900 dark:border-neutral-50 dark:text-neutral-50{% else %}text-neutral-400 transition-colors duration-200 hover:text-neutral-900 dark:text-neutral-600 dark:hover:text-neutral-50{% endif %}" href="{{ '/about/' | relative_url }}">About</a>
         </div>
         <button class="flex items-center transition-colors duration-200 hover:text-neutral-900 dark:hover:text-neutral-50" id="theme-toggle" type="button" aria-label="Toggle theme">

@@ -1,6 +1,6 @@
-title: Sprite Coding
+title: KeLes Coding
 description: Engineering notes, project logs, and thoughts worth keeping.
-author: Sprite
+author: KeLes
 email: leske94@foxmail.com
 lang: en
 theme: null
@@ -16,8 +16,8 @@ defaults:
       type: posts
     values:
       layout: post
-      author: Sprite
-      city: "百慕大三角📍"
+      author: KeLes
+      city: "Bermuda Triangle📍"
   - scope:
       path: ""
     values:

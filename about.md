@@ -4,7 +4,7 @@ title: About
 ---
 
 <header class="mb-[80px] max-w-3xl">
-  <h1 class="mb-6 font-h1 text-h1 text-primary">Sprite</h1>
+  <h1 class="mb-6 font-h1 text-h1 text-primary">KeLes</h1>
   <p class="max-w-2xl text-body-lg text-on-surface-variant">
     Master's student in AI at South China Normal University. Focused on backend engineering, LLM applications, and system design. Reach me at <a href="mailto:leske94@foxmail.com" class="text-primary hover:underline">leske94@foxmail.com</a>
   </p>
@@ -46,15 +46,15 @@ title: About
       <h2 class="mb-6 font-h3 text-h3 text-primary">Publications</h2>
       <div class="space-y-4 text-body-md">
         <div>
-          <div class="font-semibold text-primary">PlanningArena</div>
+          <a href="https://aclanthology.org/2025.acl-long.1499/" class="font-semibold text-primary transition-colors duration-200 hover:underline">PlanningArena</a>
           <div class="text-on-surface-variant">First author, ACL 2025 (CCF A)</div>
         </div>
         <div>
-          <div class="font-semibold text-primary">NaturalGAIA</div>
+          <a href="https://arxiv.org/abs/2508.01330" class="font-semibold text-primary transition-colors duration-200 hover:underline">NaturalGAIA</a>
           <div class="text-on-surface-variant">First author, ACL 2026 (CCF A)</div>
         </div>
         <div>
-          <div class="font-semibold text-primary">EW-YOLOv7</div>
+          <a href="https://www.mdpi.com/2227-9717/11/7/2037" class="font-semibold text-primary transition-colors duration-200 hover:underline">EW-YOLOv7</a>
           <div class="text-on-surface-variant">First author, Processes 2023 (SCI Q2)</div>
         </div>
       </div>
