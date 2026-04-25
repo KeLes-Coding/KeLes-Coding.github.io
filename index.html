@@ -3,18 +3,41 @@ layout: default
 title: Home
 ---
 
-<h1 class="site-title">{{ site.title }}</h1>
-<p class="site-desc">{{ site.description }}</p>
+<section class="mb-[80px] max-w-3xl">
+  <p class="mb-4 text-xs font-bold uppercase tracking-[0.3em] text-on-surface-variant">KeLes Coding</p>
+  <h1 class="mb-6 font-h1 text-h1 text-primary">Notes on engineering, systems, and things worth keeping.</h1>
+  <p class="max-w-2xl text-body-lg text-on-surface-variant">
+    A personal archive for technical writing, experiments, and longer project notes. The structure is minimal on purpose: readable typography, direct navigation, and posts first.
+  </p>
+</section>
 
-<ul class="post-list">
-  {% for post in site.posts %}
-  <li>
-    <a href="{{ post.url }}">{{ post.title }}</a>
-    <span class="post-date">{{ post.date | date: "%Y-%m-%d" }}</span>
-  </li>
-  {% endfor %}
-</ul>
-
-{% if site.posts.size == 0 %}
-<p class="empty">No posts yet.</p>
-{% endif %}
+<section id="posts" class="grid grid-cols-1 gap-6 md:grid-cols-12">
+  <div class="md:col-span-4">
+    <h2 class="mb-4 font-h3 text-h3 text-primary">Latest Posts</h2>
+    <p class="text-body-md text-on-surface-variant">
+      Articles are generated from Jekyll posts under <code>_posts/</code>. The list below is wired to the real collection.
+    </p>
+  </div>
+  <div class="md:col-span-8">
+    {% if site.posts.size > 0 %}
+      <div class="space-y-4">
+        {% for post in site.posts %}
+          <article class="group border border-surface-container-high bg-surface-container-lowest p-6 transition-colors duration-200 hover:border-neutral-900 dark:hover:border-neutral-50">
+            <div class="mb-3 text-xs font-bold uppercase tracking-[0.24em] text-on-surface-variant">{{ post.date | date: "%Y-%m-%d" }}</div>
+            <h3 class="mb-3 text-2xl font-semibold text-primary">
+              <a href="{{ post.url | relative_url }}" class="inline-flex items-center gap-2">
+                {{ post.title }}
+                <span class="material-symbols-outlined text-base transition-transform duration-200 group-hover:translate-x-1">north_east</span>
+              </a>
+            </h3>
+            <p class="text-body-md text-on-surface-variant">{{ post.excerpt | strip_html | truncate: 180 }}</p>
+          </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="border border-dashed border-outline-variant bg-surface-container-low p-8 text-on-surface-variant">
+        No posts yet.
+      </div>
+    {% endif %}
+  </div>
+</section>

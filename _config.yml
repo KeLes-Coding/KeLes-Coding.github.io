@@ -4,11 +4,17 @@ theme: null
 markdown: kramdown
 baseurl: ""
 url: "https://keles-coding.github.io"
+timezone: Asia/Shanghai
+future: true
 
 defaults:
   - scope:
       path: ""
       type: posts
+    values:
+      layout: post
+  - scope:
+      path: ""
     values:
       layout: default
 
