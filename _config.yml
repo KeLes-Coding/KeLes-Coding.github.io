@@ -1,0 +1,18 @@
+title: KeLes Coding
+description: Personal site
+theme: null
+markdown: kramdown
+baseurl: ""
+url: "https://keles-coding.github.io"
+
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: default
+
+permalink: /posts/:title/
+
+exclude:
+  - README.md
