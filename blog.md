@@ -12,38 +12,77 @@ permalink: /blog/
   </p>
 </section>
 
-<section class="grid grid-cols-1 gap-6 md:grid-cols-12">
-  <div class="md:col-span-4">
-    <h2 class="mb-4 font-h3 text-h3 text-primary">All Posts</h2>
-    <p class="text-body-md text-on-surface-variant">
-      Articles are generated from Jekyll posts under <code>_posts/</code>. The list below is wired to the real collection.
-    </p>
-  </div>
-  <div class="md:col-span-8">
-    {% if site.posts.size > 0 %}
-      <div class="space-y-4">
-        {% for post in site.posts %}
-          <article class="group border border-surface-container-high bg-surface-container-lowest p-6 transition-colors duration-200 hover:border-neutral-900 dark:hover:border-neutral-50">
-            {% include post_breadcrumb.html post=post %}
-            <div class="mb-3 flex flex-wrap items-center gap-3 text-xs font-bold uppercase tracking-[0.24em] text-on-surface-variant">
-              <span>{{ post.date | date: "%Y-%m-%d" }}</span>
-              {% if post.city %}<span>{{ post.city }}</span>{% endif %}
-              <span>{{ post.author | default: site.author }}</span>
-            </div>
-            <h3 class="mb-3 text-2xl font-semibold text-primary">
-              <a href="{{ post.url | relative_url }}" class="inline-flex items-center gap-2">
-                {{ post.title }}
-                <span class="material-symbols-outlined text-base transition-transform duration-200 group-hover:translate-x-1">north_east</span>
-              </a>
-            </h3>
-            <p class="text-body-md text-on-surface-variant">{{ post.excerpt | strip_html | truncate: 180 }}</p>
-          </article>
-        {% endfor %}
-      </div>
-    {% else %}
-      <div class="border border-dashed border-outline-variant bg-surface-container-low p-8 text-on-surface-variant">
-        No posts yet.
-      </div>
-    {% endif %}
+{% comment %}
+  Group posts by their top-level folder under _posts/.
+  Posts at the root of _posts/ are treated as "uncategorized".
+{% endcomment %}
+
+{% assign root_posts = "" | split: "" %}
+{% assign grouped_posts = "" | split: "" %}
+{% assign folder_names = "" | split: "" %}
+
+{% for post in site.posts %}
+  {% assign parts = post.path | split: "/" %}
+  {% comment %} parts: ["_posts", "Folder?", "...", "file.md"] {% endcomment %}
+  {% if parts.size == 2 %}
+    {% assign root_posts = root_posts | push: post %}
+  {% else %}
+    {% assign folder_name = parts[1] %}
+    {% unless folder_names contains folder_name %}
+      {% assign folder_names = folder_names | push: folder_name %}
+    {% endunless %}
+  {% endif %}
+{% endfor %}
+
+{% if root_posts.size > 0 %}
+<section class="mb-16">
+  <h2 class="mb-4 font-h3 text-h3 text-primary">Posts</h2>
+  <div class="space-y-4">
+    {% for post in root_posts %}
+      <article class="group border border-surface-container-high bg-surface-container-lowest p-6 transition-colors duration-200 hover:border-neutral-900 dark:hover:border-neutral-50">
+        {% include post_breadcrumb.html post=post %}
+        <div class="mb-3 flex flex-wrap items-center gap-3 text-xs font-bold uppercase tracking-[0.24em] text-on-surface-variant">
+          <span>{{ post.date | date: "%Y-%m-%d" }}</span>
+          {% if post.city %}<span>{{ post.city }}</span>{% endif %}
+          <span>{{ post.author | default: site.author }}</span>
+        </div>
+        <h3 class="mb-3 text-2xl font-semibold text-primary">
+          <a href="{{ post.url | relative_url }}" class="inline-flex items-center gap-2">
+            {{ post.title }}
+            <span class="material-symbols-outlined text-base transition-transform duration-200 group-hover:translate-x-1">north_east</span>
+          </a>
+        </h3>
+        <p class="text-body-md text-on-surface-variant">{{ post.excerpt | strip_html | truncate: 180 }}</p>
+      </article>
+    {% endfor %}
   </div>
 </section>
+{% endif %}
+
+{% for folder_name in folder_names %}
+<section class="mb-16">
+  <h2 class="mb-4 font-h3 text-h3 text-primary">{{ folder_name }}</h2>
+  <div class="space-y-4">
+    {% for post in site.posts %}
+      {% assign parts = post.path | split: "/" %}
+      {% if parts.size > 2 and parts[1] == folder_name %}
+      <article class="group border border-surface-container-high bg-surface-container-lowest p-6 transition-colors duration-200 hover:border-neutral-900 dark:hover:border-neutral-50">
+        {% include post_breadcrumb.html post=post %}
+        <div class="mb-3 flex flex-wrap items-center gap-3 text-xs font-bold uppercase tracking-[0.24em] text-on-surface-variant">
+          <span>{{ post.date | date: "%Y-%m-%d" }}</span>
+          {% if post.city %}<span>{{ post.city }}</span>{% endif %}
+          <span>{{ post.author | default: site.author }}</span>
+        </div>
+        <h3 class="mb-3 text-2xl font-semibold text-primary">
+          <a href="{{ post.url | relative_url }}" class="inline-flex items-center gap-2">
+            {{ post.title }}
+            <span class="material-symbols-outlined text-base transition-transform duration-200 group-hover:translate-x-1">north_east</span>
+          </a>
+        </h3>
+        <p class="text-body-md text-on-surface-variant">{{ post.excerpt | strip_html | truncate: 180 }}</p>
+      </article>
+      {% endif %}
+    {% endfor %}
+  </div>
+</section>
+{% endfor %}
