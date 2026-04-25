@@ -1,0 +1,14 @@
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var headings = document.querySelectorAll('.post h2, .post h3, .post h4');
+  headings.forEach(function(h) {
+    if (!h.id) return;
+    var link = document.createElement('a');
+    link.href = '#' + h.id;
+    link.className = 'heading-anchor';
+    link.setAttribute('aria-label', 'Permalink to this heading');
+    link.innerHTML = '<span class="material-symbols-outlined" style="font-size:0.85em;vertical-align:middle;margin-left:0.4rem;">link</span>';
+    h.appendChild(link);
+  });
+});
+</script>

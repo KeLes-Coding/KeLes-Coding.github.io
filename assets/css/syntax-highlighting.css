@@ -1,0 +1,157 @@
+.highlight {
+  background: var(--color-surface-container-low);
+  border: 1px solid var(--color-outline-variant);
+  border-radius: 0.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.highlight pre {
+  margin: 0;
+  border: none;
+  padding: 1rem 1.1rem;
+  background: transparent;
+  overflow-x: auto;
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.highlight code {
+  font-family: Consolas, "SFMono-Regular", Menlo, monospace;
+}
+
+/* Rouge token classes using MD3 color tokens */
+
+/* Comments */
+.highlight .c,
+.highlight .c1,
+.highlight .cm,
+.highlight .cs {
+  color: var(--color-on-surface-variant);
+  font-style: italic;
+}
+
+/* Keywords */
+.highlight .k,
+.highlight .kc,
+.highlight .kd,
+.highlight .kn,
+.highlight .kp,
+.highlight .kr,
+.highlight .kt {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+/* Strings */
+.highlight .s,
+.highlight .s1,
+.highlight .s2,
+.highlight .se,
+.highlight .sh,
+.highlight .si,
+.highlight .sr,
+.highlight .sx {
+  color: var(--color-accent);
+}
+
+/* Numbers / Constants */
+.highlight .m,
+.highlight .mf,
+.highlight .mh,
+.highlight .mi,
+.highlight .mo,
+.highlight .nb,
+.highlight .no,
+.highlight .nt,
+.highlight .nv,
+.highlight .vc,
+.highlight .vg,
+.highlight .vi {
+  color: var(--color-tertiary);
+}
+
+/* Functions / Identifiers */
+.highlight .nf,
+.highlight .fm,
+.highlight .nd,
+.highlight .ni,
+.highlight .nl,
+.highlight .nn,
+.highlight .nx,
+.highlight .py {
+  color: var(--color-on-primary-container);
+}
+
+/* Types / Class names */
+.highlight .nc,
+.highlight .ne,
+.highlight .nf {
+  color: var(--color-accent-hover);
+  font-weight: 600;
+}
+
+/* Variables */
+.highlight .n,
+.highlight .nv,
+.highlight .vg,
+.highlight .vi {
+  color: var(--color-on-surface);
+}
+
+/* Operators */
+.highlight .o,
+.highlight .ow {
+  color: var(--color-primary);
+}
+
+/* Punctuation */
+.highlight .p,
+.highlight .pi {
+  color: var(--color-on-surface-variant);
+}
+
+/* Decorators / Annotations */
+.highlight .cp,
+.highlight .gs,
+.highlight .ge {
+  color: var(--color-on-surface-variant);
+  font-weight: 600;
+}
+
+/* Errors */
+.highlight .err {
+  color: var(--color-error);
+}
+
+/* Escapes */
+.highlight .se {
+  color: var(--color-accent);
+}
+
+/* Generic */
+.highlight .gd {
+  color: var(--color-error);
+}
+
+.highlight .gi {
+  color: var(--color-accent);
+}
+
+.highlight .gu {
+  color: var(--color-on-surface-variant);
+}
+
+/* Line numbers */
+.highlight .linenos {
+  color: var(--color-outline);
+  padding-right: 0.75rem;
+  border-right: 1px solid var(--color-outline-variant);
+  margin-right: 0.75rem;
+  user-select: none;
+}
+
+/* Line highlight */
+.highlight .hll {
+  background: var(--color-surface-container-high);
+}

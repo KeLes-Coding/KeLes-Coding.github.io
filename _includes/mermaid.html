@@ -1,0 +1,36 @@
+{% if page.content contains "language-mermaid" %}
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+
+  var theme = document.documentElement.classList.contains('dark') ? 'dark' : 'default';
+
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: theme,
+    themeVariables: {
+      primaryColor: '#eeeeee',
+      primaryTextColor: '#1a1c1c',
+      primaryBorderColor: '#cfc4c5',
+      lineColor: '#4c4546',
+      secondaryColor: '#e8e8e8',
+      tertiaryColor: '#f3f3f3',
+      fontFamily: 'Inter, sans-serif',
+      fontSize: '14px'
+    }
+  });
+
+  var observer = new MutationObserver(function() {
+    var newTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'default';
+    mermaid.initialize({ startOnLoad: false, theme: newTheme });
+    document.querySelectorAll('.mermaid').forEach(function(el) {
+      el.removeAttribute('data-processed');
+    });
+    mermaid.run();
+  });
+
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['class']
+  });
+</script>
+{% endif %}

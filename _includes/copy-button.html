@@ -1,0 +1,37 @@
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var codeBlocks = document.querySelectorAll('.post .highlight');
+  codeBlocks.forEach(function(block) {
+    var code = block.querySelector('code');
+    if (!code || code.classList.contains('language-mermaid')) return;
+
+    var lang = '';
+    code.classList.forEach(function(cls) {
+      if (cls.startsWith('language-')) {
+        lang = cls.replace('language-', '');
+      }
+    });
+
+    if (lang) {
+      var label = document.createElement('span');
+      label.className = 'lang-label';
+      label.textContent = lang;
+      block.appendChild(label);
+    }
+
+    var btn = document.createElement('button');
+    btn.className = 'copy-button';
+    btn.setAttribute('aria-label', 'Copy code');
+    btn.innerHTML = '<span class="material-symbols-outlined">content_copy</span>';
+    btn.addEventListener('click', function() {
+      navigator.clipboard.writeText(code.textContent).then(function() {
+        btn.innerHTML = '<span class="material-symbols-outlined">check</span>';
+        setTimeout(function() {
+          btn.innerHTML = '<span class="material-symbols-outlined">content_copy</span>';
+        }, 2000);
+      });
+    });
+    block.appendChild(btn);
+  });
+});
+</script>

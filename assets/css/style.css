@@ -127,8 +127,10 @@ a {
   clip-path: circle(48% at 50% 50%);
 }
 
+/* ── Post / Markdown Styles ── */
+
 .post {
-  color: #1a1c1c;
+  color: var(--color-on-surface);
 }
 
 .post > * + * {
@@ -140,22 +142,32 @@ a {
 .post h4 {
   margin-top: 2.75rem;
   margin-bottom: 0.75rem;
-  color: #000000;
+  color: var(--color-primary);
   line-height: 1.25;
 }
 
-.post h2 {
-  font-size: 2rem;
+.post h2 { font-size: 2rem; }
+.post h3 { font-size: 1.4rem; }
+.post h4 { font-size: 1.15rem; }
+
+/* Heading anchor links */
+.heading-anchor {
+  opacity: 0;
+  transition: opacity 0.2s;
+  color: var(--color-on-surface-variant);
+  text-decoration: none;
 }
 
-.post h3 {
-  font-size: 1.4rem;
+.post h2:hover .heading-anchor,
+.post h3:hover .heading-anchor,
+.post h4:hover .heading-anchor {
+  opacity: 1;
 }
 
 .post p,
 .post ul,
 .post ol {
-  color: #2c2627;
+  color: var(--color-on-surface);
   font-size: 1rem;
 }
 
@@ -168,13 +180,96 @@ a {
   margin-top: 0.45rem;
 }
 
+/* ── Tables ── */
+
+.post table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.25rem 0;
+  font-size: 0.92rem;
+}
+
+.post thead {
+  border-bottom: 2px solid var(--color-outline-variant);
+}
+
+.post th {
+  text-align: left;
+  padding: 0.6rem 0.75rem;
+  font-weight: 600;
+  color: var(--color-on-surface);
+}
+
+.post td {
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid var(--color-outline-variant);
+  color: var(--color-on-surface-variant);
+}
+
+.post tr:hover td {
+  background-color: var(--color-surface-container-low);
+}
+
+/* ── Task Lists / Checkboxes ── */
+
+.post ul.task-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.post ul.task-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.post ul.task-list li input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 1.1rem;
+  height: 1.1rem;
+  border: 2px solid var(--color-outline);
+  border-radius: 0.2rem;
+  margin-top: 0.25rem;
+  flex-shrink: 0;
+  cursor: default;
+  position: relative;
+}
+
+.post ul.task-list li input[type="checkbox"]:checked {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.post ul.task-list li input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute;
+  left: 3px;
+  top: 0px;
+  width: 5px;
+  height: 9px;
+  border: solid var(--color-on-primary);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* ── Code Blocks ── */
+
 .post pre {
   overflow-x: auto;
-  border: 1px solid #e8e8e8;
-  background: #f3f3f3;
+  border: 1px solid var(--color-outline-variant);
+  background: var(--color-surface-container-low);
   padding: 1rem 1.1rem;
   font-size: 0.92rem;
   line-height: 1.55;
+  border-radius: 0.5rem;
+}
+
+.post .highlight pre {
+  border: none;
+  padding: 1rem 1.1rem;
+  background: transparent;
+  margin: 0;
 }
 
 .post code {
@@ -182,43 +277,145 @@ a {
 }
 
 .post :not(pre) > code {
-  border: 1px solid #e8e8e8;
-  background: #f3f3f3;
+  border: 1px solid var(--color-outline-variant);
+  background: var(--color-surface-container-low);
   padding: 0.1rem 0.35rem;
+  border-radius: 0.2rem;
+  font-size: 0.88em;
 }
 
-.post blockquote {
-  margin: 1.5rem 0;
-  border-left: 3px solid #000000;
-  padding-left: 1rem;
-  color: #3a3636;
+/* Copy button */
+.post .highlight .copy-button {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: var(--color-surface-container);
+  color: var(--color-on-surface-variant);
+  border: none;
+  border-radius: 0.25rem;
+  padding: 0.25rem;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
+.post .highlight:hover .copy-button {
+  opacity: 1;
+}
+
+.post .highlight .copy-button .material-symbols-outlined {
+  font-size: 18px;
+}
+
+/* Language label */
+.post .highlight .lang-label {
+  position: absolute;
+  top: 0.25rem;
+  right: 2.5rem;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-on-surface-variant);
+  opacity: 0.5;
+  font-family: "Inter", sans-serif;
+  pointer-events: none;
+}
+
+/* Mermaid pre-render hiding */
+.post pre:has(code.language-mermaid) {
+  display: none;
+}
+
+.post .mermaid {
+  margin: 1.25rem 0;
+}
+
+/* ── Blockquotes ── */
+
+.post blockquote {
+  position: relative;
+  margin: 1.5rem 0;
+  padding: 0.75rem 1rem 0.75rem 1.25rem;
+  border-left: 3px solid var(--color-accent);
+  background: var(--color-surface-container-low);
+  border-radius: 0 0.5rem 0.5rem 0;
+  color: var(--color-on-surface-variant);
+  font-style: italic;
+}
+
+.post blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+/* ── Horizontal Rules ── */
+
+.post hr {
+  border: none;
+  height: 1px;
+  background: var(--color-outline-variant);
+  margin: 2rem 0;
+}
+
+/* ── Images ── */
 
 .post img {
   max-width: 100%;
   height: auto;
+  border-radius: 0.5rem;
 }
 
+/* ── Table of Contents ── */
 
-.dark .post {
-  color: #f1f1f1;
+.post .toc,
+.post-toc {
+  background: var(--color-surface-container-low);
+  border: 1px solid var(--color-outline-variant);
+  border-radius: 0.5rem;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
 }
 
-.dark .post h2,
-.dark .post h3,
-.dark .post h4 {
-  color: #ffffff;
+.post .toc::before,
+.post-toc::before {
+  content: 'Table of Contents';
+  display: block;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-on-surface-variant);
+  margin-bottom: 0.5rem;
 }
 
-.dark .post p,
-.dark .post ul,
-.dark .post ol,
-.dark .post blockquote {
-  color: #e0dedd;
+.post .toc ul {
+  padding-left: 1rem;
+  margin: 0;
+  list-style: none;
 }
 
-.dark .post pre,
-.dark .post :not(pre) > code {
-  border-color: #2f3131;
-  background: #1b1b1b;
+.post .toc li {
+  margin-top: 0.35rem;
+}
+
+.post .toc a {
+  color: var(--color-on-surface-variant);
+  transition: color 0.2s;
+}
+
+.post .toc a:hover {
+  color: var(--color-primary);
+}
+
+/* ── KaTeX ── */
+
+.post .katex {
+  color: var(--color-on-surface);
+}
+
+.post .katex-display {
+  margin: 1.25rem 0;
+  overflow-x: auto;
 }
