@@ -105,8 +105,6 @@ title: About
       <h2 class="mb-6 font-h3 text-h3 text-primary">Awards</h2>
       <ul class="space-y-2 text-body-md text-on-surface-variant">
         <li>National Scholarship (2025)</li>
-        <li>3rd Prize, 16th Guangdong Province Computer Design Competition (2023)</li>
-        <li>2nd Prize, 10th National College Digital Media Tech Competition (2022)</li>
       </ul>
     </section>
   </div>
