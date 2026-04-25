@@ -46,16 +46,25 @@ title: About
       <h2 class="mb-6 font-h3 text-h3 text-primary">Publications</h2>
       <div class="space-y-4 text-body-md">
         <div>
-          <a href="https://aclanthology.org/2025.acl-long.1499/" class="font-semibold text-accent transition-colors duration-200 hover:text-accent-hover hover:underline">PlanningArena</a>
+          <div class="font-semibold text-primary">PlanningArena</div>
           <div class="text-on-surface-variant">First author, ACL 2025 (CCF A)</div>
+          <a href="https://aclanthology.org/2025.acl-long.1499/" class="inline-flex items-center gap-1 text-sm text-on-surface-variant transition-colors duration-200 hover:text-primary">
+            <span class="material-symbols-outlined text-base">link</span> Paper
+          </a>
         </div>
         <div>
-          <a href="https://arxiv.org/abs/2508.01330" class="font-semibold text-accent transition-colors duration-200 hover:text-accent-hover hover:underline">NaturalGAIA</a>
+          <div class="font-semibold text-primary">NaturalGAIA</div>
           <div class="text-on-surface-variant">First author, ACL 2026 (CCF A)</div>
+          <a href="https://arxiv.org/abs/2508.01330" class="inline-flex items-center gap-1 text-sm text-on-surface-variant transition-colors duration-200 hover:text-primary">
+            <span class="material-symbols-outlined text-base">link</span> Paper
+          </a>
         </div>
         <div>
-          <a href="https://www.mdpi.com/2227-9717/11/7/2037" class="font-semibold text-accent transition-colors duration-200 hover:text-accent-hover hover:underline">EW-YOLOv7</a>
+          <div class="font-semibold text-primary">EW-YOLOv7</div>
           <div class="text-on-surface-variant">First author, Processes 2023 (SCI Q2)</div>
+          <a href="https://www.mdpi.com/2227-9717/11/7/2037" class="inline-flex items-center gap-1 text-sm text-on-surface-variant transition-colors duration-200 hover:text-primary">
+            <span class="material-symbols-outlined text-base">link</span> Paper
+          </a>
         </div>
       </div>
     </section>

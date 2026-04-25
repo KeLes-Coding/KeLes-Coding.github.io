@@ -107,6 +107,9 @@
     }
   </script>
   <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+  {% comment %} Favicon: png preferred, jpeg fallback {% endcomment %}
+  <link rel="icon" type="image/png" href="{{ '/icon/icon1.png' | relative_url }}">
+  <link rel="icon" type="image/jpeg" href="{{ '/icon/icon1.jpeg' | relative_url }}">
 </head>
 <body class="min-h-screen bg-surface-container-lowest font-body-md text-on-surface antialiased">
   {% assign current_url = page.url | replace: 'index.html', '' %}
@@ -119,10 +122,20 @@
           <a class="{% if current_url == '/blog/' %}border-b border-neutral-900 pb-1 font-bold text-neutral-900 dark:border-neutral-50 dark:text-neutral-50{% else %}text-neutral-400 transition-colors duration-200 hover:text-neutral-900 dark:text-neutral-600 dark:hover:text-neutral-50{% endif %}" href="{{ '/blog/' | relative_url }}">Blog</a>
           <a class="{% if current_url == '/about/' %}border-b border-neutral-900 pb-1 font-bold text-neutral-900 dark:border-neutral-50 dark:text-neutral-50{% else %}text-neutral-400 transition-colors duration-200 hover:text-neutral-900 dark:text-neutral-600 dark:hover:text-neutral-50{% endif %}" href="{{ '/about/' | relative_url }}">About</a>
         </div>
-        <button class="flex items-center transition-colors duration-200 hover:text-neutral-900 dark:hover:text-neutral-50" id="theme-toggle" type="button" aria-label="Toggle theme">
-          <span class="material-symbols-outlined dark:hidden">dark_mode</span>
-          <span class="material-symbols-outlined hidden dark:block">light_mode</span>
-        </button>
+        <div class="flex items-center gap-4">
+          {% if current_url == '/blog/' %}
+          <div class="flex items-center gap-2">
+            <label for="blog-search" class="cursor-pointer">
+              <span class="material-symbols-outlined text-xl text-neutral-400 transition-colors duration-200 hover:text-neutral-900 dark:text-neutral-600 dark:hover:text-neutral-50">search</span>
+            </label>
+            <input id="blog-search" type="text" placeholder="Search posts&hellip;" class="w-0 overflow-hidden border-b border-transparent bg-transparent text-sm text-neutral-900 outline-none transition-all duration-200 placeholder:text-neutral-400 focus:w-40 focus:border-neutral-400 dark:text-neutral-50 dark:focus:border-neutral-600 dark:placeholder:text-neutral-600" />
+          </div>
+          {% endif %}
+          <button class="flex items-center transition-colors duration-200 hover:text-neutral-900 dark:hover:text-neutral-50" id="theme-toggle" type="button" aria-label="Toggle theme">
+            <span class="material-symbols-outlined dark:hidden">dark_mode</span>
+            <span class="material-symbols-outlined hidden dark:block">light_mode</span>
+          </button>
+        </div>
       </div>
     </nav>
     <main class="flex-grow px-6 py-[80px] md:px-12">
