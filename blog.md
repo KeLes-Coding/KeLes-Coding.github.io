@@ -61,13 +61,12 @@ permalink: /blog/
             {% if post.city %}<span>{{ post.city }}</span>{% endif %}
             <span>{{ post.author | default: site.author }}</span>
           </div>
-          <h3 class="mb-3 text-2xl font-semibold text-primary">
+          <h3 class="text-2xl font-semibold text-primary">
             <a href="{{ post.url | relative_url }}" class="inline-flex items-center gap-2">
               {{ post.title }}
               <span class="material-symbols-outlined text-base transition-transform duration-200 group-hover:translate-x-1">north_east</span>
             </a>
           </h3>
-          <p class="text-body-md text-on-surface-variant">{{ post.excerpt | strip_html | truncate: 180 }}</p>
         </article>
         {% endfor %}
       </div>
@@ -87,13 +86,12 @@ permalink: /blog/
             {% if post.city %}<span>{{ post.city }}</span>{% endif %}
             <span>{{ post.author | default: site.author }}</span>
           </div>
-          <h3 class="mb-3 text-2xl font-semibold text-primary">
+          <h3 class="text-2xl font-semibold text-primary">
             <a href="{{ post.url | relative_url }}" class="inline-flex items-center gap-2">
               {{ post.title }}
               <span class="material-symbols-outlined text-base transition-transform duration-200 group-hover:translate-x-1">north_east</span>
             </a>
           </h3>
-          <p class="text-body-md text-on-surface-variant">{{ post.excerpt | strip_html | truncate: 180 }}</p>
         </article>
           {% endif %}
         {% endfor %}
@@ -144,14 +142,12 @@ permalink: /blog/
   {% endfor %}
   {% endif %}
 
-  {% comment %} Search functionality {% endcomment %}
   var searchData = [
     {% for post in site.posts %}
     {
       title: {{ post.title | jsonify }},
       url: {{ post.url | relative_url | jsonify }},
       date: {{ post.date | date: "%Y-%m-%d" | jsonify }},
-      excerpt: {{ post.excerpt | strip_html | truncate: 180 | jsonify }},
       {% if post.city %}city: {{ post.city | jsonify }},{% endif %}
       author: {{ post.author | default: site.author | jsonify }}
     }{% unless forloop.last %},{% endunless %}
@@ -178,7 +174,7 @@ permalink: /blog/
       }
 
       var results = searchData.filter(function(p) {
-        return p.title.toLowerCase().indexOf(q) !== -1 || p.excerpt.toLowerCase().indexOf(q) !== -1;
+        return p.title.toLowerCase().indexOf(q) !== -1;
       });
 
       var noResults = document.getElementById('search-no-results');
@@ -197,13 +193,12 @@ permalink: /blog/
               (p.city ? '<span>' + p.city + '</span>' : '') +
               '<span>' + p.author + '</span>' +
             '</div>' +
-            '<h3 class="mb-3 text-2xl font-semibold text-primary">' +
+            '<h3 class="text-2xl font-semibold text-primary">' +
               '<a href="' + p.url + '" class="inline-flex items-center gap-2">' +
                 p.title +
                 '<span class="material-symbols-outlined text-base transition-transform duration-200 group-hover:translate-x-1">north_east</span>' +
               '</a>' +
             '</h3>' +
-            '<p class="text-body-md text-on-surface-variant">' + p.excerpt + '</p>' +
           '</article>';
         });
       }
