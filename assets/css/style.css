@@ -121,6 +121,12 @@ a {
   text-decoration: none;
 }
 
+.site-icon {
+  width: 36px;
+  height: 36px;
+  clip-path: circle(48% at 50% 50%);
+}
+
 .post {
   color: #1a1c1c;
 }

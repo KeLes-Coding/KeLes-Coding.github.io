@@ -116,7 +116,10 @@
   <div class="flex min-h-screen flex-col">
     <nav class="w-full border-b border-neutral-200 bg-white/90 px-6 py-6 backdrop-blur md:px-8 dark:border-neutral-800 dark:bg-neutral-950/90">
       <div class="mx-auto flex max-w-screen-2xl items-center justify-between">
-        <a class="text-lg font-black tracking-tighter text-neutral-900 transition-opacity duration-200 hover:opacity-80 dark:text-neutral-50" href="{{ '/' | relative_url }}">{{ site.title | upcase | replace: " ", "_" }}</a>
+        <a class="flex items-center gap-3 text-lg font-black tracking-tighter text-neutral-900 transition-opacity duration-200 hover:opacity-80 dark:text-neutral-50" href="{{ '/' | relative_url }}">
+            <img src="{{ '/icon/icon1.png' | relative_url }}" alt="KeLes" class="site-icon">
+            {{ site.title | upcase | replace: " ", "_" }}
+          </a>
         <div class="hidden items-center space-x-8 text-sm uppercase tracking-wider md:flex">
           <a class="{% if current_url == '/' %}border-b border-neutral-900 pb-1 font-bold text-neutral-900 dark:border-neutral-50 dark:text-neutral-50{% else %}text-neutral-400 transition-colors duration-200 hover:text-neutral-900 dark:text-neutral-600 dark:hover:text-neutral-50{% endif %}" href="{{ '/' | relative_url }}">Home</a>
           <a class="{% if current_url == '/blog/' %}border-b border-neutral-900 pb-1 font-bold text-neutral-900 dark:border-neutral-50 dark:text-neutral-50{% else %}text-neutral-400 transition-colors duration-200 hover:text-neutral-900 dark:text-neutral-600 dark:hover:text-neutral-50{% endif %}" href="{{ '/blog/' | relative_url }}">Blog</a>
