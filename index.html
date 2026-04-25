@@ -4,10 +4,10 @@ title: Home
 ---
 
 <section class="mb-[80px] max-w-3xl">
-  <p class="mb-4 text-xs font-bold uppercase tracking-[0.3em] text-on-surface-variant">KeLes Coding</p>
-  <h1 class="mb-6 font-h1 text-h1 text-primary">Notes on engineering, systems, and things worth keeping.</h1>
+  <p class="mb-4 text-xs font-bold uppercase tracking-[0.3em] text-on-surface-variant">{{ site.title }}</p>
+  <h1 class="mb-6 font-h1 text-h1 text-primary">Engineering notes, project logs, and thoughts worth keeping.</h1>
   <p class="max-w-2xl text-body-lg text-on-surface-variant">
-    A personal archive for technical writing, experiments, and longer project notes. The structure is minimal on purpose: readable typography, direct navigation, and posts first.
+    {{ site.description }}
   </p>
 </section>
 
@@ -23,7 +23,12 @@ title: Home
       <div class="space-y-4">
         {% for post in site.posts %}
           <article class="group border border-surface-container-high bg-surface-container-lowest p-6 transition-colors duration-200 hover:border-neutral-900 dark:hover:border-neutral-50">
-            <div class="mb-3 text-xs font-bold uppercase tracking-[0.24em] text-on-surface-variant">{{ post.date | date: "%Y-%m-%d" }}</div>
+            {% include post_breadcrumb.html post=post %}
+            <div class="mb-3 flex flex-wrap items-center gap-3 text-xs font-bold uppercase tracking-[0.24em] text-on-surface-variant">
+              <span>{{ post.date | date: "%Y-%m-%d" }}</span>
+              {% if post.city %}<span>{{ post.city }}</span>{% endif %}
+              <span>{{ post.author | default: site.author }}</span>
+            </div>
             <h3 class="mb-3 text-2xl font-semibold text-primary">
               <a href="{{ post.url | relative_url }}" class="inline-flex items-center gap-2">
                 {{ post.title }}

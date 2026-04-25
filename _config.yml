@@ -1,5 +1,8 @@
-title: KeLes Coding
-description: Personal site
+title: Sprite Coding
+description: Engineering notes, project logs, and thoughts worth keeping.
+author: Sprite
+email: leske94@foxmail.com
+lang: en
 theme: null
 markdown: kramdown
 baseurl: ""
@@ -13,6 +16,8 @@ defaults:
       type: posts
     values:
       layout: post
+      author: Sprite
+      city: "百慕大三角📍"
   - scope:
       path: ""
     values:

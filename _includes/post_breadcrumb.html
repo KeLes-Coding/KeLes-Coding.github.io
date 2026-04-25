@@ -1,0 +1,19 @@
+{% assign segments = include.post.path | split: "/" %}
+{% assign breadcrumb_count = 0 %}
+{% for segment in segments %}
+  {% assign idx = forloop.index0 %}
+  {% if idx > 0 and forloop.last == false %}
+    {% assign breadcrumb_count = breadcrumb_count | plus: 1 %}
+  {% endif %}
+{% endfor %}
+{% if breadcrumb_count > 0 %}
+<div class="mb-2 flex flex-wrap items-center gap-1 text-xs font-bold uppercase tracking-[0.15em] text-on-surface-variant">
+  {% for segment in segments %}
+    {% assign idx = forloop.index0 %}
+    {% if idx > 0 and forloop.last == false %}
+      {% if idx > 1 %}<span>&rsaquo;</span>{% endif %}
+      <a href="{{ '/' | relative_url }}#posts" class="transition-colors duration-200 hover:text-primary">{{ segment }}</a>
+    {% endif %}
+  {% endfor %}
+</div>
+{% endif %}
