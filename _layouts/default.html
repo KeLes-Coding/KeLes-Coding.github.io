@@ -107,9 +107,8 @@
     }
   </script>
   <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
-  {% comment %} Favicon: png preferred, jpeg fallback {% endcomment %}
-  <link rel="icon" type="image/png" href="{{ '/icon/icon1.png' | relative_url }}">
-  <link rel="icon" type="image/jpeg" href="{{ '/icon/icon1.jpeg' | relative_url }}">
+  <link rel="icon" type="image/png" sizes="192x192" href="{{ '/icon/favicon.png' | relative_url }}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ '/icon/favicon-32.png' | relative_url }}">
 </head>
 <body class="min-h-screen bg-surface-container-lowest font-body-md text-on-surface antialiased">
   {% assign current_url = page.url | replace: 'index.html', '' %}
