@@ -1,5 +1,6 @@
 title: KeLes Coding
-description: ノーコンティニューでクリアしてやるぜ！
+description:
+# description: ノーコンティニューでクリアしてやるぜ！
 author: KeLes
 email: leske94@foxmail.com
 lang: en
@@ -23,6 +24,7 @@ defaults:
       layout: post
       author: KeLes
       city: "Bermuda Triangle📍"
+      visible: true
   - scope:
       path: ""
     values:

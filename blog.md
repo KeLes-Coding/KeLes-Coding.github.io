@@ -7,19 +7,17 @@ permalink: /blog/
 <section class="mb-[40px] max-w-3xl">
   <p class="mb-4 text-xs font-bold uppercase tracking-[0.3em] text-on-surface-variant">{{ site.title }}</p>
   <h1 class="mb-6 font-h1 text-h1 text-primary">Blog</h1>
-  <p class="max-w-2xl text-body-lg text-on-surface-variant">
-    {{ site.description }}  <img src="{{ '/icon/kamen_rider_ex_aid_logo_by_driftingcar_dg94uya.png' | relative_url }}" alt="Kamen Rider Ex-Aid" class="inline h-[1.4em] w-auto align-middle">
-  </p>
 </section>
 
 {% comment %}
-  Collect folder names and categorize posts.
+  Collect folder names and categorize visible posts.
 {% endcomment %}
 
+{% assign visible_posts = site.posts | where_exp: "post", "post.visible != false" %}
 {% assign root_posts = "" | split: "" %}
 {% assign folder_names = "" | split: "" %}
 
-{% for post in site.posts %}
+{% for post in visible_posts %}
   {% assign parts = post.path | split: "/" %}
   {% if parts.size == 2 %}
     {% assign root_posts = root_posts | push: post %}
@@ -76,7 +74,7 @@ permalink: /blog/
     {% for folder_name in folder_names %}
     <div class="blog-post-group {% unless forloop.first and root_posts.size == 0 %}hidden{% endunless %}" id="folder-{{ folder_name | slugify }}">
       <div class="space-y-4">
-        {% for post in site.posts %}
+        {% for post in visible_posts %}
           {% assign parts = post.path | split: "/" %}
           {% if parts.size > 2 and parts[1] == folder_name %}
         <article class="group border border-surface-container-high bg-surface-container-lowest p-6 transition-colors duration-200 hover:border-neutral-900 dark:hover:border-neutral-50">
@@ -143,7 +141,7 @@ permalink: /blog/
   {% endif %}
 
   var searchData = [
-    {% for post in site.posts %}
+    {% for post in visible_posts %}
     {
       title: {{ post.title | jsonify }},
       url: {{ post.url | relative_url | jsonify }},
