@@ -1,16 +1,19 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   var codeBlocks = document.querySelectorAll('.post .highlight');
-  codeBlocks.forEach(function(block) {
+  for (var i = 0; i < codeBlocks.length; i++) {
+    var block = codeBlocks[i];
     var code = block.querySelector('code');
-    if (!code || code.classList.contains('language-mermaid')) return;
+    if (!code) continue;
 
+    var classList = code.className.split(' ');
     var lang = '';
-    code.classList.forEach(function(cls) {
-      if (cls.startsWith('language-')) {
-        lang = cls.replace('language-', '');
-      }
-    });
+    var isMermaid = false;
+    for (var j = 0; j < classList.length; j++) {
+      if (classList[j] === 'language-mermaid') { isMermaid = true; }
+      if (classList[j].indexOf('language-') === 0) { lang = classList[j].replace('language-', ''); }
+    }
+    if (isMermaid) continue;
 
     if (lang) {
       var label = document.createElement('span');
@@ -23,15 +26,17 @@ document.addEventListener('DOMContentLoaded', function() {
     btn.className = 'copy-button';
     btn.setAttribute('aria-label', 'Copy code');
     btn.innerHTML = '<span class="material-symbols-outlined">content_copy</span>';
-    btn.addEventListener('click', function() {
-      navigator.clipboard.writeText(code.textContent).then(function() {
-        btn.innerHTML = '<span class="material-symbols-outlined">check</span>';
-        setTimeout(function() {
-          btn.innerHTML = '<span class="material-symbols-outlined">content_copy</span>';
-        }, 2000);
-      });
-    });
+    btn.addEventListener('click', (function(btn, code) {
+      return function() {
+        navigator.clipboard.writeText(code.textContent).then(function() {
+          btn.innerHTML = '<span class="material-symbols-outlined">check</span>';
+          setTimeout(function() {
+            btn.innerHTML = '<span class="material-symbols-outlined">content_copy</span>';
+          }, 2000);
+        });
+      };
+    })(btn, code));
     block.appendChild(btn);
-  });
+  }
 });
 </script>

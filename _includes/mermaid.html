@@ -2,28 +2,49 @@
 <script type="module">
   import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
 
-  var theme = document.documentElement.classList.contains('dark') ? 'dark' : 'default';
+  var isDark = document.documentElement.classList.contains('dark');
+
+  // Convert Rouge-wrapped mermaid code blocks into <div class="mermaid">
+  document.querySelectorAll('.post .highlight').forEach(function(el) {
+    var code = el.querySelector('code.language-mermaid');
+    if (!code) return;
+    var mermaidDiv = document.createElement('div');
+    mermaidDiv.className = 'mermaid';
+    mermaidDiv.textContent = code.textContent;
+    el.parentNode.replaceChild(mermaidDiv, el);
+  });
+
+  // Also handle plain <pre><code class="language-mermaid"> blocks (non-Rouge)
+  document.querySelectorAll('.post pre code.language-mermaid').forEach(function(code) {
+    var pre = code.closest('pre');
+    if (!pre) return;
+    var mermaidDiv = document.createElement('div');
+    mermaidDiv.className = 'mermaid';
+    mermaidDiv.textContent = code.textContent;
+    pre.parentNode.replaceChild(mermaidDiv, pre);
+  });
+
+  // Store original text for re-render on theme change
+  document.querySelectorAll('.post .mermaid').forEach(function(el) {
+    el.setAttribute('data-original', el.textContent);
+  });
 
   mermaid.initialize({
     startOnLoad: true,
-    theme: theme,
+    theme: isDark ? 'dark' : 'default',
     themeVariables: {
-      primaryColor: '#eeeeee',
-      primaryTextColor: '#1a1c1c',
-      primaryBorderColor: '#cfc4c5',
-      lineColor: '#4c4546',
-      secondaryColor: '#e8e8e8',
-      tertiaryColor: '#f3f3f3',
       fontFamily: 'Inter, sans-serif',
       fontSize: '14px'
     }
   });
 
+  // Re-render on theme toggle
   var observer = new MutationObserver(function() {
-    var newTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'default';
-    mermaid.initialize({ startOnLoad: false, theme: newTheme });
+    var newDark = document.documentElement.classList.contains('dark');
+    mermaid.initialize({ startOnLoad: false, theme: newDark ? 'dark' : 'default' });
     document.querySelectorAll('.mermaid').forEach(function(el) {
       el.removeAttribute('data-processed');
+      el.innerHTML = el.getAttribute('data-original');
     });
     mermaid.run();
   });
