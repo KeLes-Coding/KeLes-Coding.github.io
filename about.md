@@ -45,6 +45,13 @@ title: About
             <span class="material-symbols-outlined text-base">link</span> Paper
           </a>
         </div>
+        <div>
+          <div class="font-semibold text-primary">EW-YOLOv7</div>
+          <div class="text-on-surface-variant">First author, Processes 2023 (SCI Q2)</div>
+          <a href="https://www.mdpi.com/2227-9717/11/7/2037" class="inline-flex items-center gap-1 text-sm text-on-surface-variant transition-colors duration-200 hover:text-primary">
+            <span class="material-symbols-outlined text-base">link</span> Paper
+          </a>
+        </div>
       </div>
     </section>
   </div>
