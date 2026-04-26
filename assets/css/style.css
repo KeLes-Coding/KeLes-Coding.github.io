@@ -380,8 +380,6 @@ a {
   display: grid;
   grid-template-columns: 200px minmax(0, 1fr) 200px;
   gap: 2rem;
-  max-width: 1120px;
-  margin: 0 auto;
 }
 
 /* Hide sidebars on small screens */

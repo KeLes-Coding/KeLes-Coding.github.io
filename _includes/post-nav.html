@@ -1,13 +1,12 @@
 {% comment %}
   Sidebar navigation: shows sibling posts in the same folder.
   For root-level posts, shows all visible root posts.
-  Sets has_post_nav = true if navigation is rendered.
+  Always shows nav when there are visible siblings.
 {% endcomment %}
 {% assign segments = include.post.path | split: "/" %}
 {% assign current_url = include.post.url %}
 
 {% if segments.size == 2 %}
-  {% comment %}Root-level post — list all visible root posts{% endcomment %}
   {% assign visible_posts = site.posts | where_exp: "p", "p.visible != false" %}
   {% assign nav_posts = "" | split: "" %}
   {% for p in visible_posts %}
@@ -17,7 +16,7 @@
     {% endif %}
   {% endfor %}
 
-  {% if nav_posts.size > 1 %}
+  {% if nav_posts.size > 0 %}
   <nav class="post-nav">
     <div class="post-nav-title">Posts</div>
     {% for p in nav_posts %}
@@ -28,7 +27,6 @@
   </nav>
   {% endif %}
 {% else %}
-  {% comment %}Nested post — list all visible posts in the same folder{% endcomment %}
   {% assign folder_name = segments[1] %}
   {% assign visible_posts = site.posts | where_exp: "p", "p.visible != false" %}
   {% assign nav_posts = "" | split: "" %}
