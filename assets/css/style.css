@@ -374,10 +374,139 @@ a {
   border-radius: 0.5rem;
 }
 
-/* ── Table of Contents ── */
+/* ── Post Layout ── */
 
-.post .toc,
-.post-toc {
+.post-layout {
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr) 200px;
+  gap: 2rem;
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+/* Hide sidebars on small screens */
+@media (max-width: 1023px) {
+  .post-layout {
+    grid-template-columns: 1fr;
+  }
+  .post-sidebar-left,
+  .post-sidebar-right {
+    display: none;
+  }
+}
+
+.post-sidebar-left {
+  position: sticky;
+  top: 80px;
+  align-self: start;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+}
+
+.post-sidebar-right {
+  position: sticky;
+  top: 80px;
+  align-self: start;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+}
+
+/* ── Left Sidebar: Post Nav ── */
+
+.post-nav-folder {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-on-surface-variant);
+  margin-bottom: 0.5rem;
+  padding: 0 0.25rem;
+}
+
+.post-nav-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-on-surface-variant);
+  margin-bottom: 0.75rem;
+  padding: 0 0.25rem;
+}
+
+.post-nav-link {
+  display: block;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  padding: 0.3rem 0.25rem 0.3rem 0.5rem;
+  color: var(--color-on-surface-variant);
+  border-left: 2px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+  text-decoration: none;
+}
+
+.post-nav-link:hover {
+  color: var(--color-primary);
+}
+
+.post-nav-link.active {
+  color: var(--color-primary);
+  font-weight: 600;
+  border-left-color: var(--color-primary);
+}
+
+/* ── Right Sidebar: Table of Contents ── */
+
+.post-toc-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-on-surface-variant);
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--color-outline-variant);
+}
+
+.post-toc-content ul {
+  padding-left: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.post-toc-content ul ul {
+  padding-left: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.post-toc-content li {
+  margin-top: 0.2rem;
+}
+
+.post-toc-link {
+  display: block;
+  font-size: 0.8rem;
+  line-height: 1.35;
+  padding: 0.2rem 0;
+  color: var(--color-on-surface-variant);
+  border-left: 2px solid transparent;
+  padding-left: 0.5rem;
+  text-decoration: none;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.post-toc-link:hover {
+  color: var(--color-primary);
+}
+
+.post-toc-link.current {
+  color: var(--color-primary);
+  font-weight: 600;
+  border-left-color: var(--color-primary);
+}
+
+/* Inline TOC (kramdown-generated, inside .post) */
+
+.post .toc {
   background: var(--color-surface-container-low);
   border: 1px solid var(--color-outline-variant);
   border-radius: 0.5rem;
@@ -385,8 +514,7 @@ a {
   margin-bottom: 1.5rem;
 }
 
-.post .toc::before,
-.post-toc::before {
+.post .toc::before {
   content: 'Table of Contents';
   display: block;
   font-weight: 600;

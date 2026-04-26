@@ -6,7 +6,15 @@ permalink: /blog/
 
 <section class="mb-[40px] max-w-3xl">
   <p class="mb-4 text-xs font-bold uppercase tracking-[0.3em] text-on-surface-variant">{{ site.title }}</p>
-  <h1 class="mb-6 font-h1 text-h1 text-primary">Blog</h1>
+  <div class="flex items-end justify-between gap-4">
+    <h1 class="font-h1 text-h1 text-primary">Blog</h1>
+    <div class="flex items-center gap-2">
+      <label for="blog-search" class="cursor-pointer">
+        <span class="material-symbols-outlined text-xl text-on-surface-variant transition-colors duration-200 hover:text-primary">search</span>
+      </label>
+      <input id="blog-search" type="text" placeholder="Search posts&hellip;" class="w-0 overflow-hidden border-b border-transparent bg-transparent text-sm text-on-surface outline-none transition-all duration-200 placeholder:text-on-surface-variant focus:w-40 focus:border-outline-variant" />
+    </div>
+  </div>
 </section>
 
 {% comment %}

@@ -1,0 +1,52 @@
+{% comment %}
+  Sidebar navigation: shows sibling posts in the same folder.
+  For root-level posts, shows all visible root posts.
+  Sets has_post_nav = true if navigation is rendered.
+{% endcomment %}
+{% assign segments = include.post.path | split: "/" %}
+{% assign current_url = include.post.url %}
+
+{% if segments.size == 2 %}
+  {% comment %}Root-level post — list all visible root posts{% endcomment %}
+  {% assign visible_posts = site.posts | where_exp: "p", "p.visible != false" %}
+  {% assign nav_posts = "" | split: "" %}
+  {% for p in visible_posts %}
+    {% assign p_parts = p.path | split: "/" %}
+    {% if p_parts.size == 2 %}
+      {% assign nav_posts = nav_posts | push: p %}
+    {% endif %}
+  {% endfor %}
+
+  {% if nav_posts.size > 1 %}
+  <nav class="post-nav">
+    <div class="post-nav-title">Posts</div>
+    {% for p in nav_posts %}
+    <a class="post-nav-link{% if p.url == current_url %} active{% endif %}" href="{{ p.url | relative_url }}">
+      {{ p.title }}
+    </a>
+    {% endfor %}
+  </nav>
+  {% endif %}
+{% else %}
+  {% comment %}Nested post — list all visible posts in the same folder{% endcomment %}
+  {% assign folder_name = segments[1] %}
+  {% assign visible_posts = site.posts | where_exp: "p", "p.visible != false" %}
+  {% assign nav_posts = "" | split: "" %}
+  {% for p in visible_posts %}
+    {% assign p_parts = p.path | split: "/" %}
+    {% if p_parts.size > 2 and p_parts[1] == folder_name %}
+      {% assign nav_posts = nav_posts | push: p %}
+    {% endif %}
+  {% endfor %}
+
+  {% if nav_posts.size > 0 %}
+  <nav class="post-nav">
+    <div class="post-nav-folder">{{ folder_name }}</div>
+    {% for p in nav_posts %}
+    <a class="post-nav-link{% if p.url == current_url %} active{% endif %}" href="{{ p.url | relative_url }}">
+      {{ p.title }}
+    </a>
+    {% endfor %}
+  </nav>
+  {% endif %}
+{% endif %}

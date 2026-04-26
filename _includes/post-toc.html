@@ -1,0 +1,89 @@
+<aside class="post-toc" id="post-toc">
+  <div class="post-toc-title">目录</div>
+  <div class="post-toc-content" id="post-toc-content"></div>
+</aside>
+
+<script>
+(function() {
+  var headings = document.querySelectorAll('.post h2, .post h3');
+  var toc = document.getElementById('post-toc');
+  if (!headings || headings.length === 0) {
+    if (toc) toc.style.display = 'none';
+    adjustLayout();
+    return;
+  }
+
+  var tocContent = document.getElementById('post-toc-content');
+  var list = document.createElement('ul');
+
+  var lastLevel = 0;
+  var currentList = list;
+
+  headings.forEach(function(h) {
+    if (!h.id) return;
+
+    var level = parseInt(h.tagName.charAt(1));
+    var item = document.createElement('li');
+    var link = document.createElement('a');
+    link.href = '#' + h.id;
+    link.textContent = h.textContent;
+    link.className = 'post-toc-link post-toc-h' + level;
+    item.appendChild(link);
+
+    if (level > lastLevel && lastLevel > 0) {
+      var subList = document.createElement('ul');
+      currentList.lastElementChild.appendChild(subList);
+      currentList = subList;
+    } else if (level < lastLevel) {
+      while (currentList.parentElement && currentList.parentElement.tagName === 'UL' && level < lastLevel) {
+        currentList = currentList.parentElement.parentElement;
+        lastLevel--;
+      }
+    }
+
+    currentList.appendChild(item);
+    lastLevel = level;
+  });
+
+  tocContent.appendChild(list);
+
+  // Highlight current heading on scroll
+  var allLinks = tocContent.querySelectorAll('.post-toc-link');
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        allLinks.forEach(function(l) { l.classList.remove('current'); });
+        var activeLink = tocContent.querySelector('a[href="#' + entry.target.id + '"]');
+        if (activeLink) activeLink.classList.add('current');
+      }
+    });
+  }, { rootMargin: '-80px 0px -70% 0px' });
+
+  headings.forEach(function(h) { observer.observe(h); });
+
+  adjustLayout();
+
+  function adjustLayout() {
+    var layout = document.querySelector('.post-layout');
+    if (!layout) return;
+    var leftSidebar = layout.querySelector('.post-sidebar-left');
+    var rightSidebar = layout.querySelector('.post-sidebar-right');
+    var hasLeft = leftSidebar && leftSidebar.textContent.trim().length > 0;
+    var hasRight = rightSidebar && toc && toc.style.display !== 'none';
+
+    if (hasLeft && hasRight) {
+      layout.style.gridTemplateColumns = '200px minmax(0, 1fr) 200px';
+    } else if (hasLeft) {
+      layout.style.gridTemplateColumns = '200px minmax(0, 1fr)';
+      if (rightSidebar) rightSidebar.style.display = 'none';
+    } else if (hasRight) {
+      layout.style.gridTemplateColumns = 'minmax(0, 1fr) 200px';
+      if (leftSidebar) leftSidebar.style.display = 'none';
+    } else {
+      layout.style.gridTemplateColumns = '1fr';
+      if (leftSidebar) leftSidebar.style.display = 'none';
+      if (rightSidebar) rightSidebar.style.display = 'none';
+    }
+  }
+})();
+</script>

@@ -114,8 +114,8 @@
 <body class="min-h-screen bg-surface-container-lowest font-body-md text-on-surface antialiased">
   {% assign current_url = page.url | replace: 'index.html', '' %}
   <div class="flex min-h-screen flex-col">
-    <nav class="w-full border-b border-neutral-200 bg-white/90 px-6 py-6 backdrop-blur md:px-8 dark:border-neutral-800 dark:bg-neutral-950/90">
-      <div class="mx-auto flex max-w-screen-2xl items-center justify-between">
+    <nav class="sticky top-0 z-50 w-full border-b border-neutral-200 bg-white px-6 py-4 md:px-8 dark:border-neutral-800 dark:bg-neutral-950">
+      <div class="mx-auto flex max-w-[1120px] items-center justify-between">
         <a class="flex items-center gap-3 text-lg font-black tracking-tighter text-neutral-900 transition-opacity duration-200 hover:opacity-80 dark:text-neutral-50" href="{{ '/' | relative_url }}">
             <img src="{{ '/icon/icon1.png' | relative_url }}" alt="KeLes" class="site-icon">
             {{ site.title | upcase | replace: " ", "_" }}
@@ -126,14 +126,6 @@
           <a class="{% if current_url == '/about/' %}border-b border-neutral-900 pb-1 font-bold text-neutral-900 dark:border-neutral-50 dark:text-neutral-50{% else %}text-neutral-400 transition-colors duration-200 hover:text-neutral-900 dark:text-neutral-600 dark:hover:text-neutral-50{% endif %}" href="{{ '/about/' | relative_url }}">About</a>
         </div>
         <div class="flex items-center gap-4">
-          {% if current_url == '/blog/' %}
-          <div class="flex items-center gap-2">
-            <label for="blog-search" class="cursor-pointer">
-              <span class="material-symbols-outlined text-xl text-neutral-400 transition-colors duration-200 hover:text-neutral-900 dark:text-neutral-600 dark:hover:text-neutral-50">search</span>
-            </label>
-            <input id="blog-search" type="text" placeholder="Search posts&hellip;" class="w-0 overflow-hidden border-b border-transparent bg-transparent text-sm text-neutral-900 outline-none transition-all duration-200 placeholder:text-neutral-400 focus:w-40 focus:border-neutral-400 dark:text-neutral-50 dark:focus:border-neutral-600 dark:placeholder:text-neutral-600" />
-          </div>
-          {% endif %}
           <button class="flex items-center transition-colors duration-200 hover:text-neutral-900 dark:hover:text-neutral-50" id="theme-toggle" type="button" aria-label="Toggle theme">
             <span class="material-symbols-outlined dark:hidden">dark_mode</span>
             <span class="material-symbols-outlined hidden dark:block">light_mode</span>
@@ -141,7 +133,7 @@
         </div>
       </div>
     </nav>
-    <main class="flex-grow px-6 py-[80px] md:px-12">
+    <main class="flex-grow px-6 py-16 md:px-12">
       <div class="mx-auto w-full max-w-[1120px]">
         {{ content }}
       </div>

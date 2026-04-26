@@ -2,18 +2,27 @@
 layout: default
 ---
 
-<article class="post mx-auto max-w-3xl">
-  {% include post_breadcrumb.html post=page %}
-  <div class="mb-6 flex flex-wrap items-center gap-3 text-xs font-bold uppercase tracking-[0.24em] text-on-surface-variant">
-    <span>{{ page.date | date: "%Y-%m-%d" }}</span>
-    {% if page.city %}<span>{{ page.city }}</span>{% endif %}
-    <span>{{ page.author | default: site.author }}</span>
-  </div>
-  {{ content }}
-  {% include copy-button.html %}
-  {% include heading-anchors.html %}
-  {% include mermaid.html %}
-  {% include katex.html %}
-</article>
+<div class="post-layout">
+  <aside class="post-sidebar-left">
+    {% include post_breadcrumb.html post=page %}
+    {% include post-nav.html post=page %}
+  </aside>
 
-<a href="{{ '/blog/' | relative_url }}" class="back-link mt-10 inline-flex items-center gap-2 text-sm uppercase tracking-[0.16em] text-on-surface-variant transition-colors duration-200 hover:text-primary">&larr; Back to blog</a>
+  <article class="post post-content-area">
+    <div class="mb-6 flex flex-wrap items-center gap-3 text-xs font-bold uppercase tracking-[0.24em] text-on-surface-variant">
+      <span>{{ page.date | date: "%Y-%m-%d" }}</span>
+      {% if page.city %}<span>{{ page.city }}</span>{% endif %}
+      <span>{{ page.author | default: site.author }}</span>
+    </div>
+    {{ content }}
+    {% include copy-button.html %}
+    {% include heading-anchors.html %}
+    {% include mermaid.html %}
+    {% include katex.html %}
+    <a href="{{ '/blog/' | relative_url }}" class="back-link mt-10 inline-flex items-center gap-2 text-sm uppercase tracking-[0.16em] text-on-surface-variant transition-colors duration-200 hover:text-primary">&larr; Back to blog</a>
+  </article>
+
+  <aside class="post-sidebar-right">
+    {% include post-toc.html %}
+  </aside>
+</div>
