@@ -127,6 +127,103 @@ a {
   clip-path: circle(48% at 50% 50%);
 }
 
+/* ── Blog Folder Tree ── */
+
+.blog-tree {
+  position: sticky;
+  top: 88px;
+  max-height: calc(100vh - 112px);
+  overflow-y: auto;
+  padding-right: 0.25rem;
+}
+
+.blog-tree-folder {
+  margin-top: 0.2rem;
+}
+
+.blog-tree-folder > summary {
+  cursor: pointer;
+  list-style: none;
+}
+
+.blog-tree-folder > summary::-webkit-details-marker {
+  display: none;
+}
+
+.blog-tree-folder > summary::before {
+  content: "chevron_right";
+  display: inline-block;
+  width: 1rem;
+  margin-right: 0.15rem;
+  vertical-align: middle;
+  color: var(--color-on-surface-variant);
+  font-family: "Material Symbols Outlined";
+  font-size: 1rem;
+  line-height: 1;
+  transition: transform 0.2s;
+}
+
+.blog-tree-folder[open] > summary::before {
+  transform: rotate(90deg);
+}
+
+.blog-tree-row {
+  display: inline-flex;
+  min-width: 0;
+  width: calc(100% - 1.35rem);
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  vertical-align: middle;
+}
+
+.blog-tree-action {
+  min-width: 0;
+  flex: 1;
+  border: 0;
+  background: transparent;
+  color: var(--color-on-surface-variant);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.35;
+  overflow: hidden;
+  padding: 0.35rem 0.2rem;
+  text-align: left;
+  text-overflow: ellipsis;
+  transition: color 0.2s;
+  white-space: nowrap;
+}
+
+.blog-tree-action:hover,
+.blog-tree-action.active {
+  color: var(--color-primary);
+}
+
+.blog-tree-count,
+.post-tree-count {
+  align-items: center;
+  border: 1px solid var(--color-outline-variant);
+  border-radius: 9999px;
+  color: var(--color-on-surface-variant);
+  display: inline-flex;
+  flex: 0 0 auto;
+  font-size: 0.68rem;
+  font-weight: 700;
+  justify-content: center;
+  line-height: 1;
+  min-width: 1.35rem;
+  padding: 0.16rem 0.36rem;
+}
+
+.blog-tree-children {
+  border-left: 1px solid var(--color-outline-variant);
+  margin-left: 0.45rem;
+  padding-left: 0.65rem;
+}
+
 /* ── Post / Markdown Styles ── */
 
 .post {
@@ -378,7 +475,7 @@ a {
 
 .post-layout {
   display: grid;
-  grid-template-columns: 200px minmax(0, 1fr) 200px;
+  grid-template-columns: 240px minmax(0, 1fr) 220px;
   gap: 2rem;
 }
 
@@ -429,6 +526,10 @@ a {
   color: var(--color-on-surface-variant);
   margin-bottom: 0.75rem;
   padding: 0 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
 }
 
 .post-nav-link {
@@ -450,6 +551,56 @@ a {
   color: var(--color-primary);
   font-weight: 600;
   border-left-color: var(--color-primary);
+}
+
+.post-tree-folder {
+  margin-top: 0.25rem;
+}
+
+.post-tree-folder > summary {
+  align-items: center;
+  color: var(--color-on-surface-variant);
+  cursor: pointer;
+  display: flex;
+  gap: 0.35rem;
+  justify-content: space-between;
+  list-style: none;
+  min-width: 0;
+  padding: 0.25rem 0.25rem;
+}
+
+.post-tree-folder > summary::-webkit-details-marker {
+  display: none;
+}
+
+.post-tree-folder > summary::before {
+  content: "chevron_right";
+  flex: 0 0 auto;
+  font-family: "Material Symbols Outlined";
+  font-size: 1rem;
+  line-height: 1;
+  transition: transform 0.2s;
+}
+
+.post-tree-folder[open] > summary::before {
+  transform: rotate(90deg);
+}
+
+.post-tree-folder-name {
+  flex: 1;
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1.35;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.post-tree-children {
+  border-left: 1px solid var(--color-outline-variant);
+  margin-left: 0.55rem;
+  padding-left: 0.55rem;
 }
 
 /* ── Right Sidebar: Table of Contents ── */
@@ -478,6 +629,14 @@ a {
 
 .post-toc-content li {
   margin-top: 0.2rem;
+}
+
+.post-toc-level-3 {
+  padding-left: 0.75rem;
+}
+
+.post-toc-level-4 {
+  padding-left: 1.5rem;
 }
 
 .post-toc-link {
