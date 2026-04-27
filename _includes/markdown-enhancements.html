@@ -1,0 +1,50 @@
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var post = document.querySelector('.post');
+  if (!post) return;
+
+  post.querySelectorAll('blockquote').forEach(function(blockquote) {
+    var firstParagraph = blockquote.querySelector('p:first-child');
+    if (!firstParagraph) return;
+
+    var markerMatch = firstParagraph.textContent.trim().match(/^\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]\s*/i);
+    if (!markerMatch) return;
+
+    var type = markerMatch[1].toLowerCase();
+    blockquote.classList.add('callout', 'callout-' + type);
+    firstParagraph.textContent = firstParagraph.textContent.replace(/^\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]\s*/i, '');
+
+    var label = document.createElement('div');
+    label.className = 'callout-title';
+    label.textContent = type;
+    blockquote.insertBefore(label, blockquote.firstChild);
+  });
+
+  post.querySelectorAll('table').forEach(function(table) {
+    if (table.parentElement && table.parentElement.classList.contains('table-scroll')) return;
+    var wrapper = document.createElement('div');
+    wrapper.className = 'table-scroll';
+    table.parentNode.insertBefore(wrapper, table);
+    wrapper.appendChild(table);
+  });
+
+  post.querySelectorAll('p > img:only-child').forEach(function(image) {
+    image.parentElement.classList.add('image-frame');
+  });
+
+  post.querySelectorAll('p').forEach(function(paragraph) {
+    var text = paragraph.textContent.trim();
+    var previous = paragraph.previousElementSibling;
+    if (!previous || !previous.classList.contains('image-frame')) return;
+    if (paragraph.children.length !== 1 || paragraph.children[0].tagName !== 'EM') return;
+    if (!text) return;
+    paragraph.classList.add('image-caption');
+  });
+
+  post.querySelectorAll('a[href^="http"]').forEach(function(link) {
+    if (link.hostname === window.location.hostname) return;
+    link.setAttribute('target', '_blank');
+    link.setAttribute('rel', 'noopener noreferrer');
+  });
+});
+</script>

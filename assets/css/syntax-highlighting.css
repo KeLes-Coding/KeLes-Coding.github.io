@@ -20,14 +20,44 @@
   font-family: Consolas, "SFMono-Regular", Menlo, monospace;
 }
 
-/* Rouge token classes using MD3 color tokens */
+/* Rouge token palette */
+
+:root {
+  --syntax-comment: #6f7782;
+  --syntax-keyword: #8f2fbb;
+  --syntax-string: #0f7b4f;
+  --syntax-number: #b35c00;
+  --syntax-function: #0757a6;
+  --syntax-type: #9a3a00;
+  --syntax-variable: #1f2933;
+  --syntax-operator: #7c3aed;
+  --syntax-punctuation: #59636e;
+  --syntax-preprocessor: #a33a3a;
+  --syntax-added: #147d46;
+  --syntax-deleted: #b42318;
+}
+
+.dark {
+  --syntax-comment: #9aa4b2;
+  --syntax-keyword: #d6a4ff;
+  --syntax-string: #78dba9;
+  --syntax-number: #f2b56b;
+  --syntax-function: #8fc7ff;
+  --syntax-type: #ffb86b;
+  --syntax-variable: #e5e7eb;
+  --syntax-operator: #c4b5fd;
+  --syntax-punctuation: #c0c7d0;
+  --syntax-preprocessor: #ff9b9b;
+  --syntax-added: #7ee2a8;
+  --syntax-deleted: #ff9b92;
+}
 
 /* Comments */
 .highlight .c,
 .highlight .c1,
 .highlight .cm,
 .highlight .cs {
-  color: var(--color-on-surface-variant);
+  color: var(--syntax-comment);
   font-style: italic;
 }
 
@@ -39,7 +69,7 @@
 .highlight .kp,
 .highlight .kr,
 .highlight .kt {
-  color: var(--color-primary);
+  color: var(--syntax-keyword);
   font-weight: 600;
 }
 
@@ -52,7 +82,7 @@
 .highlight .si,
 .highlight .sr,
 .highlight .sx {
-  color: var(--color-accent);
+  color: var(--syntax-string);
 }
 
 /* Numbers / Constants */
@@ -68,7 +98,7 @@
 .highlight .vc,
 .highlight .vg,
 .highlight .vi {
-  color: var(--color-tertiary);
+  color: var(--syntax-number);
 }
 
 /* Functions / Identifiers */
@@ -80,14 +110,14 @@
 .highlight .nn,
 .highlight .nx,
 .highlight .py {
-  color: var(--color-on-primary-container);
+  color: var(--syntax-function);
 }
 
 /* Types / Class names */
 .highlight .nc,
 .highlight .ne,
 .highlight .nf {
-  color: var(--color-accent-hover);
+  color: var(--syntax-type);
   font-weight: 600;
 }
 
@@ -96,46 +126,46 @@
 .highlight .nv,
 .highlight .vg,
 .highlight .vi {
-  color: var(--color-on-surface);
+  color: var(--syntax-variable);
 }
 
 /* Operators */
 .highlight .o,
 .highlight .ow {
-  color: var(--color-primary);
+  color: var(--syntax-operator);
 }
 
 /* Punctuation */
 .highlight .p,
 .highlight .pi {
-  color: var(--color-on-surface-variant);
+  color: var(--syntax-punctuation);
 }
 
 /* Decorators / Annotations */
 .highlight .cp,
 .highlight .gs,
 .highlight .ge {
-  color: var(--color-on-surface-variant);
+  color: var(--syntax-preprocessor);
   font-weight: 600;
 }
 
 /* Errors */
 .highlight .err {
-  color: var(--color-error);
+  color: var(--syntax-deleted);
 }
 
 /* Escapes */
 .highlight .se {
-  color: var(--color-accent);
+  color: var(--syntax-string);
 }
 
 /* Generic */
 .highlight .gd {
-  color: var(--color-error);
+  color: var(--syntax-deleted);
 }
 
 .highlight .gi {
-  color: var(--color-accent);
+  color: var(--syntax-added);
 }
 
 .highlight .gu {
