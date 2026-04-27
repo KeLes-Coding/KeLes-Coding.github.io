@@ -9,11 +9,13 @@ layout: default
   </aside>
 
   <article class="post post-content-area">
-    <div class="mb-6 flex flex-wrap items-center gap-3 text-xs font-bold uppercase tracking-[0.24em] text-on-surface-variant">
-      <span>{{ page.date | date: "%Y-%m-%d" }}</span>
-      {% if page.city %}<span>{{ page.city }}</span>{% endif %}
-      <span>{{ page.author | default: site.author }}</span>
-    </div>
+    <header class="post-header">
+      <div class="post-meta">
+        <span>{{ page.date | date: "%Y-%m-%d" }}</span>
+        <span>{{ page.author | default: site.author }}</span>
+      </div>
+      <h1 class="post-title">{{ page.title }}</h1>
+    </header>
     {{ content }}
     {% include copy-button.html %}
     {% include heading-anchors.html %}
