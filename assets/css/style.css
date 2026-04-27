@@ -674,6 +674,15 @@ a {
   line-height: 0;
 }
 
+.post .related-citation-ref {
+  font-size: 0.78em;
+  line-height: 0;
+}
+
+.post .related-citation-ref a {
+  text-decoration: none;
+}
+
 .post .footnotes {
   margin-top: 3rem;
   border-top: 1px solid var(--color-outline-variant);
@@ -688,6 +697,16 @@ a {
 
 .post .footnotes p {
   font-size: 0.9rem;
+}
+
+.post .related-record-citations {
+  margin-top: 2.5rem;
+}
+
+.post .reversefootnote {
+  color: var(--color-on-surface-variant);
+  font-size: 0.85em;
+  text-decoration: none;
 }
 
 /* ── Related Records ── */

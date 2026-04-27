@@ -3,7 +3,8 @@
 
   Expected shape:
   related_records:
-    - path: "_posts/example/2026-04-27-title.md"
+    - label: example-note
+      path: "_posts/example/2026-04-27-title.md"
       reason: "Optional note"
 {% endcomment %}
 {% if include.post.related_records %}
@@ -54,4 +55,147 @@
       {% endfor %}
     </div>
   </section>
+
+  <script type="application/json" id="related-record-citation-data">
+  [
+    {% assign emitted_citation = false %}
+    {% for record in include.post.related_records %}
+      {% assign normalized_path = record.path | replace: "\\", "/" | remove_first: "./" %}
+      {% assign related_post = nil %}
+      {% for candidate in visible_posts %}
+        {% if candidate.path == normalized_path %}
+          {% assign related_post = candidate %}
+        {% endif %}
+      {% endfor %}
+      {% if record.label and related_post %}
+        {% if emitted_citation %},{% endif %}
+        {
+          "label": {{ record.label | jsonify }},
+          "title": {{ related_post.title | jsonify }},
+          "url": {{ related_post.url | relative_url | jsonify }},
+          "date": {{ related_post.date | date: "%Y-%m-%d" | jsonify }},
+          "reason": {{ record.reason | default: "" | jsonify }}
+        }
+        {% assign emitted_citation = true %}
+      {% endif %}
+    {% endfor %}
+  ]
+  </script>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var dataEl = document.getElementById('related-record-citation-data');
+    var post = document.querySelector('.post-content-area');
+    if (!dataEl || !post) return;
+
+    var records;
+    try {
+      records = JSON.parse(dataEl.textContent).filter(Boolean);
+    } catch (error) {
+      return;
+    }
+    if (!records.length) return;
+
+    var recordByLabel = Object.create(null);
+    records.forEach(function(record) {
+      recordByLabel[record.label] = record;
+    });
+
+    var citedLabels = [];
+    var citeNumberByLabel = Object.create(null);
+
+    function shouldSkipNode(node) {
+      var parent = node.parentElement;
+      if (!parent) return true;
+      return !!parent.closest('pre, code, a, script, style, sup, .related-records, .footnotes');
+    }
+
+    function makeReference(label) {
+      if (!citeNumberByLabel[label]) {
+        citedLabels.push(label);
+        citeNumberByLabel[label] = citedLabels.length;
+      }
+
+      var number = citeNumberByLabel[label];
+      var sup = document.createElement('sup');
+      sup.className = 'related-citation-ref';
+      sup.id = 'related-fnref-' + label + '-' + number;
+
+      var link = document.createElement('a');
+      link.href = '#related-fn-' + label;
+      link.setAttribute('role', 'doc-noteref');
+      link.textContent = String(number);
+      sup.appendChild(link);
+      return sup;
+    }
+
+    var walker = document.createTreeWalker(post, NodeFilter.SHOW_TEXT);
+    var textNodes = [];
+    while (walker.nextNode()) {
+      if (!shouldSkipNode(walker.currentNode) && walker.currentNode.nodeValue.indexOf('[^') !== -1) {
+        textNodes.push(walker.currentNode);
+      }
+    }
+
+    textNodes.forEach(function(node) {
+      var text = node.nodeValue;
+      var pattern = /\[\^([A-Za-z0-9_-]+)\]/g;
+      var fragment = document.createDocumentFragment();
+      var lastIndex = 0;
+      var matched = false;
+      var match;
+
+      while ((match = pattern.exec(text)) !== null) {
+        var label = match[1];
+        if (!recordByLabel[label]) continue;
+        matched = true;
+        fragment.appendChild(document.createTextNode(text.slice(lastIndex, match.index)));
+        fragment.appendChild(makeReference(label));
+        lastIndex = pattern.lastIndex;
+      }
+
+      if (!matched) return;
+      fragment.appendChild(document.createTextNode(text.slice(lastIndex)));
+      node.parentNode.replaceChild(fragment, node);
+    });
+
+    if (!citedLabels.length) return;
+
+    var section = document.createElement('section');
+    section.className = 'footnotes related-record-citations';
+    section.setAttribute('role', 'doc-endnotes');
+
+    var list = document.createElement('ol');
+    citedLabels.forEach(function(label) {
+      var record = recordByLabel[label];
+      var item = document.createElement('li');
+      item.id = 'related-fn-' + label;
+
+      var paragraph = document.createElement('p');
+      var link = document.createElement('a');
+      link.href = record.url;
+      link.textContent = record.title;
+      paragraph.appendChild(link);
+
+      if (record.reason) {
+        paragraph.appendChild(document.createTextNode(' - ' + record.reason));
+      }
+
+      var backlink = document.createElement('a');
+      backlink.className = 'reversefootnote';
+      backlink.href = '#related-fnref-' + label + '-' + citeNumberByLabel[label];
+      backlink.setAttribute('aria-label', 'Back to reference');
+      backlink.textContent = '↩';
+      paragraph.appendChild(document.createTextNode(' '));
+      paragraph.appendChild(backlink);
+
+      item.appendChild(paragraph);
+      list.appendChild(item);
+    });
+
+    section.appendChild(list);
+    var relatedRecords = post.querySelector('.related-records');
+    post.insertBefore(section, relatedRecords || null);
+  });
+  </script>
 {% endif %}
