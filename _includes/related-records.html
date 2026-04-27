@@ -1,0 +1,58 @@
+{% comment %}
+  Render manually curated related records from post front matter.
+
+  Expected shape:
+  related_records:
+    - path: "_posts/example/2026-04-27-title.md"
+      reason: "Optional note"
+{% endcomment %}
+{% if include.post.related_records %}
+  {% assign visible_posts = site.posts | where_exp: "p", "p.visible != false" %}
+  <section class="related-records" aria-labelledby="related-records-title">
+    <div class="related-records-kicker">Related Records</div>
+    <h2 id="related-records-title" class="related-records-title">相关记录</h2>
+    <div class="related-records-list">
+      {% for record in include.post.related_records %}
+        {% assign normalized_path = record.path | replace: "\\", "/" | remove_first: "./" %}
+        {% assign related_post = nil %}
+        {% for candidate in visible_posts %}
+          {% if candidate.path == normalized_path %}
+            {% assign related_post = candidate %}
+          {% endif %}
+        {% endfor %}
+
+        {% if related_post %}
+          {% assign path_parts = related_post.path | split: "/" %}
+          {% assign folder_segments = "" | split: "" %}
+          {% for segment in path_parts %}
+            {% if forloop.index0 > 0 and forloop.last == false %}
+              {% assign folder_segments = folder_segments | push: segment %}
+            {% endif %}
+          {% endfor %}
+
+          <a class="related-record" href="{{ related_post.url | relative_url }}">
+            <span class="related-record-title">{{ related_post.title }}</span>
+            <span class="related-record-meta">
+              {{ related_post.date | date: "%Y-%m-%d" }}
+              {% if folder_segments.size > 0 %}
+                <span aria-hidden="true">·</span>
+                {{ folder_segments | join: " / " }}
+              {% endif %}
+            </span>
+            {% if record.reason %}
+              <span class="related-record-reason">{{ record.reason }}</span>
+            {% endif %}
+          </a>
+        {% else %}
+          <div class="related-record related-record-missing">
+            <span class="related-record-title">{{ normalized_path }}</span>
+            <span class="related-record-meta">未找到对应文章</span>
+            {% if record.reason %}
+              <span class="related-record-reason">{{ record.reason }}</span>
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </section>
+{% endif %}

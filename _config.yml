@@ -6,6 +6,7 @@ email: leske94@foxmail.com
 lang: en
 theme: null
 markdown: kramdown
+highlighter: rouge
 kramdown:
   input: GFM
   syntax_highlighter: rouge

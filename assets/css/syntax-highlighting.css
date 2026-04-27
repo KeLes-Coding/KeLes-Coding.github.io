@@ -20,6 +20,11 @@
   font-family: Consolas, "SFMono-Regular", Menlo, monospace;
 }
 
+.highlight code,
+.highlight pre {
+  color: var(--syntax-variable);
+}
+
 /* Rouge token palette */
 
 :root {
@@ -170,6 +175,46 @@
 
 .highlight .gu {
   color: var(--color-on-surface-variant);
+}
+
+/* SQL fences are common in design notes; make Rouge's SQL tokens more distinct. */
+.language-sql .k,
+.language-sql .kd,
+.language-sql .kn,
+.language-sql .kp,
+.language-sql .kr,
+.language-sql .ow {
+  color: var(--syntax-keyword);
+  font-weight: 700;
+}
+
+.language-sql .kt,
+.language-sql .nb,
+.language-sql .nc {
+  color: var(--syntax-type);
+  font-weight: 600;
+}
+
+.language-sql .s,
+.language-sql .s1,
+.language-sql .s2 {
+  color: var(--syntax-string);
+}
+
+.language-sql .mi,
+.language-sql .mf,
+.language-sql .m {
+  color: var(--syntax-number);
+}
+
+.language-sql .n,
+.language-sql .nf {
+  color: var(--syntax-function);
+}
+
+.language-sql .p,
+.language-sql .o {
+  color: var(--syntax-punctuation);
 }
 
 /* Line numbers */
