@@ -9,8 +9,7 @@
 {% if include.post.related_records %}
   {% assign visible_posts = site.posts | where_exp: "p", "p.visible != false" %}
   <section class="related-records" aria-labelledby="related-records-title">
-    <div class="related-records-kicker">Related Records</div>
-    <h2 id="related-records-title" class="related-records-title">相关记录</h2>
+    <h2 id="related-records-title" class="related-records-title">Recommended</h2>
     <div class="related-records-list">
       {% for record in include.post.related_records %}
         {% assign normalized_path = record.path | replace: "\\", "/" | remove_first: "./" %}
