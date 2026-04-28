@@ -20,6 +20,7 @@
     {
       title: {{ post.title | jsonify }},
       url: {{ post.url | relative_url | jsonify }},
+      date: {{ post.date | date: "%Y-%m-%d" | jsonify }},
       folders: [{% for folder in folder_segments %}{{ folder | jsonify }}{% unless forloop.last %},{% endunless %}{% endfor %}]
     }{% unless forloop.last %},{% endunless %}
     {% endfor %}
@@ -29,7 +30,35 @@
   if (!treeEl || !posts.length) return;
 
   function makeNode(name) {
-    return { name: name, children: [], childMap: Object.create(null), posts: [], count: 0 };
+    return { name: name, children: [], childMap: Object.create(null), posts: [], count: 0, oldestDate: '' };
+  }
+
+  function extractOrderNumber(text) {
+    var match = String(text || '').match(/(?:^|[^0-9])(\d+)\s*[.．、]/);
+    return match ? Number(match[1]) : null;
+  }
+
+  function compareByOrderThenDate(a, b) {
+    var aOrder = extractOrderNumber(a.title || a.name);
+    var bOrder = extractOrderNumber(b.title || b.name);
+
+    if (aOrder !== null && bOrder !== null && aOrder !== bOrder) {
+      return aOrder - bOrder;
+    }
+    if (aOrder !== null && bOrder === null) return -1;
+    if (aOrder === null && bOrder !== null) return 1;
+
+    var aDate = a.oldestDate || a.date || '';
+    var bDate = b.oldestDate || b.date || '';
+    if (aDate !== bDate) return aDate.localeCompare(bDate);
+
+    return String(a.title || a.name).localeCompare(String(b.title || b.name), 'zh-Hans-CN');
+  }
+
+  function sortTree(node) {
+    node.posts.sort(compareByOrderThenDate);
+    node.children.sort(compareByOrderThenDate);
+    node.children.forEach(sortTree);
   }
 
   function getChild(node, name) {
@@ -45,12 +74,15 @@
     items.forEach(function(post) {
       var node = root;
       node.count += 1;
+      if (!node.oldestDate || post.date < node.oldestDate) node.oldestDate = post.date;
       post.folders.forEach(function(folder) {
         node = getChild(node, folder);
         node.count += 1;
+        if (!node.oldestDate || post.date < node.oldestDate) node.oldestDate = post.date;
       });
       node.posts.push(post);
     });
+    sortTree(root);
     return root;
   }
 

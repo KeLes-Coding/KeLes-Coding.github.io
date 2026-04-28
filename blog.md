@@ -64,7 +64,35 @@ permalink: /blog/
   var searchInput = document.getElementById('global-search');
 
   function makeNode(name) {
-    return { name: name, children: [], childMap: Object.create(null), posts: [], count: 0 };
+    return { name: name, children: [], childMap: Object.create(null), posts: [], count: 0, oldestDate: '' };
+  }
+
+  function extractOrderNumber(text) {
+    var match = String(text || '').match(/(?:^|[^0-9])(\d+)\s*[.．、]/);
+    return match ? Number(match[1]) : null;
+  }
+
+  function compareByOrderThenDate(a, b) {
+    var aOrder = extractOrderNumber(a.title || a.name);
+    var bOrder = extractOrderNumber(b.title || b.name);
+
+    if (aOrder !== null && bOrder !== null && aOrder !== bOrder) {
+      return aOrder - bOrder;
+    }
+    if (aOrder !== null && bOrder === null) return -1;
+    if (aOrder === null && bOrder !== null) return 1;
+
+    var aDate = a.oldestDate || a.date || '';
+    var bDate = b.oldestDate || b.date || '';
+    if (aDate !== bDate) return aDate.localeCompare(bDate);
+
+    return String(a.title || a.name).localeCompare(String(b.title || b.name), 'zh-Hans-CN');
+  }
+
+  function sortTree(node) {
+    node.posts.sort(compareByOrderThenDate);
+    node.children.sort(compareByOrderThenDate);
+    node.children.forEach(sortTree);
   }
 
   function getChild(node, name) {
@@ -80,12 +108,15 @@ permalink: /blog/
     items.forEach(function(post) {
       var node = root;
       node.count += 1;
+      if (!node.oldestDate || post.date < node.oldestDate) node.oldestDate = post.date;
       post.folders.forEach(function(folder) {
         node = getChild(node, folder);
         node.count += 1;
+        if (!node.oldestDate || post.date < node.oldestDate) node.oldestDate = post.date;
       });
       node.posts.push(post);
     });
+    sortTree(root);
     return root;
   }
 
@@ -98,13 +129,13 @@ permalink: /blog/
   }
 
   function postsForPath(path) {
-    if (!path.length) return posts;
-    return posts.filter(function(post) {
+    var items = !path.length ? posts : posts.filter(function(post) {
       if (post.folders.length < path.length) return false;
       return path.every(function(folder, index) {
         return post.folders[index] === folder;
       });
     });
+    return items.slice().sort(compareByOrderThenDate);
   }
 
   function setActive(path) {
@@ -170,7 +201,7 @@ permalink: /blog/
     listEl.innerHTML = '';
     emptyEl.classList.toggle('hidden', items.length !== 0);
 
-    items.forEach(function(post) {
+    items.slice().sort(compareByOrderThenDate).forEach(function(post) {
       var article = document.createElement('article');
       article.className = 'group border border-surface-container-high bg-surface-container-lowest p-6 transition-colors duration-200 hover:border-neutral-900 dark:hover:border-neutral-50';
 
@@ -235,7 +266,7 @@ permalink: /blog/
       var results = posts.filter(function(post) {
         return post.title.toLowerCase().indexOf(q) !== -1 ||
           post.folders.join('/').toLowerCase().indexOf(q) !== -1;
-      });
+      }).sort(compareByOrderThenDate);
       countEl.textContent = results.length + (results.length === 1 ? ' post' : ' posts');
       renderPosts(results);
     });
