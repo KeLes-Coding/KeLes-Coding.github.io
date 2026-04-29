@@ -149,6 +149,24 @@ flowchart TD
 
 ## 9. 脚注
 
-这是一段带脚注的文本。[^markdown-note]
+Markdown 的脚注通常由两部分组成：正文里的引用标记，以及文档后面的脚注定义。这里的引用标记会被 kramdown 渲染成一个可点击的上标编号。[^markdown-note]
+
+同一个段落里也可以连续使用多个脚注引用，用来补充来源、边界条件或额外解释。[^second-note]
+
+连续两个脚注引用可以直接挨着写：这是一个同时引用两个补充说明的句子。[^pair-one][^pair-two]
+
+连续三个脚注引用也是同理：解析器会按引用出现的顺序生成脚注编号。[^triple-one][^triple-two][^triple-three]
+
+连续四个脚注引用仍然只是重复同一种引用标记：可读性会下降，所以实际文章里建议只在确实需要多个来源时使用。[^quad-one][^quad-two][^quad-three][^quad-four]
 
 [^markdown-note]: 脚注内容应该在文章底部保持清晰、紧凑，并且容易从正文跳转回来。
+[^second-note]: 脚注不是原始 Markdown 的核心语法，而是 kramdown、GitHub Flavored Markdown 等解析器常见支持的扩展语法。
+[^pair-one]: 连续脚注引用的第一个定义。
+[^pair-two]: 连续脚注引用的第二个定义。
+[^triple-one]: 三连脚注引用的第一个定义。
+[^triple-two]: 三连脚注引用的第二个定义。
+[^triple-three]: 三连脚注引用的第三个定义。
+[^quad-one]: 四连脚注引用的第一个定义。
+[^quad-two]: 四连脚注引用的第二个定义。
+[^quad-three]: 四连脚注引用的第三个定义。
+[^quad-four]: 四连脚注引用的第四个定义。
