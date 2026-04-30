@@ -14,9 +14,18 @@
     <div class="related-records-list">
       {% for record in include.post.related_records %}
         {% assign normalized_path = record.path | replace: "\\", "/" | remove_first: "./" %}
+        {% assign normalized_doc_path = normalized_path %}
+        {% if normalized_path contains "doc/v0.1/" %}
+          {% assign normalized_doc_path = normalized_path | replace_first: "doc/v0.1/", "_posts/Orbit 开发日志/v0.1/" %}
+        {% elsif normalized_path contains "doc/note/" %}
+          {% assign normalized_doc_path = normalized_path | replace_first: "doc/note/", "_posts/Orbit 开发日志/note/" %}
+        {% endif %}
+        {% assign normalized_name = normalized_path | split: "/" | last %}
         {% assign related_post = nil %}
         {% for candidate in visible_posts %}
-          {% if candidate.path == normalized_path %}
+          {% assign candidate_path = candidate.path | replace: "\\", "/" %}
+          {% assign candidate_name = candidate_path | split: "/" | last %}
+          {% if candidate_path == normalized_path or candidate_path == normalized_doc_path or candidate_name == normalized_name %}
             {% assign related_post = candidate %}
           {% endif %}
         {% endfor %}
@@ -61,9 +70,18 @@
     {% assign emitted_citation = false %}
     {% for record in include.post.related_records %}
       {% assign normalized_path = record.path | replace: "\\", "/" | remove_first: "./" %}
+      {% assign normalized_doc_path = normalized_path %}
+      {% if normalized_path contains "doc/v0.1/" %}
+        {% assign normalized_doc_path = normalized_path | replace_first: "doc/v0.1/", "_posts/Orbit 开发日志/v0.1/" %}
+      {% elsif normalized_path contains "doc/note/" %}
+        {% assign normalized_doc_path = normalized_path | replace_first: "doc/note/", "_posts/Orbit 开发日志/note/" %}
+      {% endif %}
+      {% assign normalized_name = normalized_path | split: "/" | last %}
       {% assign related_post = nil %}
       {% for candidate in visible_posts %}
-        {% if candidate.path == normalized_path %}
+        {% assign candidate_path = candidate.path | replace: "\\", "/" %}
+        {% assign candidate_name = candidate_path | split: "/" | last %}
+        {% if candidate_path == normalized_path or candidate_path == normalized_doc_path or candidate_name == normalized_name %}
           {% assign related_post = candidate %}
         {% endif %}
       {% endfor %}

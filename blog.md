@@ -44,8 +44,10 @@ permalink: /blog/
         {% assign folder_segments = folder_segments | push: segment %}
       {% endif %}
     {% endfor %}
+    {% assign display_title = post.data.title | default: post.title | default: post.name %}
     {
-      title: {{ post.title | jsonify }},
+      title: {{ display_title | jsonify }},
+      fileTitle: {{ post.name | jsonify }},
       url: {{ post.url | relative_url | jsonify }},
       date: {{ post.date | date: "%Y-%m-%d" | jsonify }},
       city: {{ post.city | default: "" | jsonify }},
@@ -202,6 +204,7 @@ permalink: /blog/
     emptyEl.classList.toggle('hidden', items.length !== 0);
 
     items.slice().sort(compareByOrderThenDate).forEach(function(post) {
+      var postTitle = post.title || post.fileTitle || 'Untitled';
       var article = document.createElement('article');
       article.className = 'group border border-surface-container-high bg-surface-container-lowest p-6 transition-colors duration-200 hover:border-neutral-900 dark:hover:border-neutral-50';
 
@@ -235,7 +238,7 @@ permalink: /blog/
       var link = document.createElement('a');
       link.href = post.url;
       link.className = 'inline-flex items-center gap-2';
-      link.appendChild(document.createTextNode(post.title));
+      link.appendChild(document.createTextNode(postTitle));
       var icon = document.createElement('span');
       icon.className = 'material-symbols-outlined text-base transition-transform duration-200 group-hover:translate-x-1';
       icon.textContent = 'north_east';
@@ -264,7 +267,8 @@ permalink: /blog/
         btn.classList.remove('active');
       });
       var results = posts.filter(function(post) {
-        return post.title.toLowerCase().indexOf(q) !== -1 ||
+        var postTitle = post.title || post.fileTitle || '';
+        return postTitle.toLowerCase().indexOf(q) !== -1 ||
           post.folders.join('/').toLowerCase().indexOf(q) !== -1;
       }).sort(compareByOrderThenDate);
       countEl.textContent = results.length + (results.length === 1 ? ' post' : ' posts');

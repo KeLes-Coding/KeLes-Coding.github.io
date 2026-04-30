@@ -17,8 +17,10 @@
         {% assign folder_segments = folder_segments | push: segment %}
       {% endif %}
     {% endfor %}
+    {% assign display_title = post.data.title | default: post.title | default: post.name %}
     {
-      title: {{ post.title | jsonify }},
+      title: {{ display_title | jsonify }},
+      fileTitle: {{ post.name | jsonify }},
       url: {{ post.url | relative_url | jsonify }},
       date: {{ post.date | date: "%Y-%m-%d" | jsonify }},
       folders: [{% for folder in folder_segments %}{{ folder | jsonify }}{% unless forloop.last %},{% endunless %}{% endfor %}]
@@ -92,10 +94,11 @@
   }
 
   function renderPost(post, parent) {
+    var postTitle = post.title || post.fileTitle || 'Untitled';
     var link = document.createElement('a');
     link.className = 'post-nav-link' + (post.url === currentUrl ? ' active' : '');
     link.href = post.url;
-    link.textContent = post.title;
+    link.textContent = postTitle;
     parent.appendChild(link);
   }
 
