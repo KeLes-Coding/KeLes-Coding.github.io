@@ -23,7 +23,7 @@ title: Home
     {% assign visible_posts = site.posts | where_exp: "post", "post.visible != false" %}
     {% if visible_posts.size > 0 %}
       <div class="space-y-4">
-        {% for post in visible_posts limit:3 %}
+        {% for post in visible_posts limit:8 %}
           <article class="group border border-surface-container-high bg-surface-container-lowest p-6 transition-colors duration-200 hover:border-neutral-900 dark:hover:border-neutral-50">
             {% include post_breadcrumb.html post=post %}
             <div class="mb-3 flex flex-wrap items-center gap-3 text-xs font-bold uppercase tracking-[0.24em] text-on-surface-variant">

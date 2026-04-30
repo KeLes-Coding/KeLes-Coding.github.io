@@ -91,6 +91,14 @@ permalink: /blog/
     return String(a.title || a.name).localeCompare(String(b.title || b.name), 'zh-Hans-CN');
   }
 
+  function compareByNewest(a, b) {
+    var aDate = a.date || '';
+    var bDate = b.date || '';
+    if (aDate !== bDate) return bDate.localeCompare(aDate);
+
+    return String(a.title || a.name).localeCompare(String(b.title || b.name), 'zh-Hans-CN');
+  }
+
   function sortTree(node) {
     node.posts.sort(compareByOrderThenDate);
     node.children.sort(compareByOrderThenDate);
@@ -137,7 +145,7 @@ permalink: /blog/
         return post.folders[index] === folder;
       });
     });
-    return items.slice().sort(compareByOrderThenDate);
+    return items.slice().sort(path.length ? compareByOrderThenDate : compareByNewest);
   }
 
   function setActive(path) {
@@ -270,7 +278,7 @@ permalink: /blog/
         var postTitle = post.title || post.fileTitle || '';
         return postTitle.toLowerCase().indexOf(q) !== -1 ||
           post.folders.join('/').toLowerCase().indexOf(q) !== -1;
-      }).sort(compareByOrderThenDate);
+      }).sort(compareByNewest);
       countEl.textContent = results.length + (results.length === 1 ? ' post' : ' posts');
       renderPosts(results);
     });

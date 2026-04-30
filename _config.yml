@@ -16,6 +16,10 @@ baseurl: ""
 url: "https://keles-coding.github.io"
 timezone: Asia/Shanghai
 future: true
+github_repository_url: "https://github.com/KeLes-Coding/KeLes-Coding.github.io"
+github_branch: "main"
+orbit_repository_url: "https://github.com/KeLes-Coding/Orbit"
+orbit_branch: "main"
 
 defaults:
   - scope:

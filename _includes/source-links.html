@@ -1,0 +1,61 @@
+{% comment %}
+  Render source and project links for posts.
+
+  Optional front matter:
+  source_files:
+    - label: Backend stream route
+      path: backend/app/api/v1/conversations.py
+      repo: orbit
+    - label: External reference
+      url: https://github.com/example/repo/blob/main/file.md
+{% endcomment %}
+{% assign post = include.post | default: page %}
+{% assign current_repo = site.github_repository_url %}
+{% assign current_branch = site.github_branch | default: "main" %}
+{% assign post_path = post.path | replace: " ", "%20" %}
+
+{% if current_repo or site.orbit_repository_url or post.source_files %}
+  <div class="source-links" aria-label="Source links">
+    {% if current_repo and post.path %}
+      <a class="source-link" href="{{ current_repo }}/blob/{{ current_branch }}/{{ post_path }}" target="_blank" rel="noopener noreferrer">
+        <span class="material-symbols-outlined" aria-hidden="true">article</span>
+        <span>Markdown source</span>
+      </a>
+    {% endif %}
+
+    {% if site.orbit_repository_url %}
+      {% if post.path contains "Orbit 开发日志" %}
+        <a class="source-link" href="{{ site.orbit_repository_url }}" target="_blank" rel="noopener noreferrer">
+          <span class="material-symbols-outlined" aria-hidden="true">terminal</span>
+          <span>Orbit repository</span>
+        </a>
+      {% endif %}
+    {% endif %}
+
+    {% for source in post.source_files %}
+      {% assign source_url = source.url %}
+      {% assign source_path = source.path | replace: " ", "%20" %}
+      {% assign source_branch = source.branch %}
+      {% if source_branch == nil or source_branch == "" %}
+        {% if source.repo == "orbit" %}
+          {% assign source_branch = site.orbit_branch | default: "main" %}
+        {% else %}
+          {% assign source_branch = current_branch %}
+        {% endif %}
+      {% endif %}
+      {% if source_url == nil or source_url == "" %}
+        {% if source.repo == "orbit" and site.orbit_repository_url %}
+          {% assign source_url = site.orbit_repository_url | append: "/blob/" | append: source_branch | append: "/" | append: source_path %}
+        {% elsif current_repo %}
+          {% assign source_url = current_repo | append: "/blob/" | append: source_branch | append: "/" | append: source_path %}
+        {% endif %}
+      {% endif %}
+      {% if source_url %}
+        <a class="source-link" href="{{ source_url }}" target="_blank" rel="noopener noreferrer">
+          <span class="material-symbols-outlined" aria-hidden="true">code</span>
+          <span>{{ source.label | default: source.path | default: "Source file" }}</span>
+        </a>
+      {% endif %}
+    {% endfor %}
+  </div>
+{% endif %}
