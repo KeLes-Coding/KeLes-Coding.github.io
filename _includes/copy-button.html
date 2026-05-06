@@ -15,12 +15,13 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     if (isMermaid) continue;
 
-    if (lang) {
-      var label = document.createElement('span');
-      label.className = 'lang-label';
-      label.textContent = lang;
-      block.appendChild(label);
-    }
+    var toolbar = document.createElement('div');
+    toolbar.className = 'code-block-toolbar';
+
+    var label = document.createElement('span');
+    label.className = 'code-block-lang';
+    label.textContent = lang || 'CODE';
+    toolbar.appendChild(label);
 
     var btn = document.createElement('button');
     btn.className = 'copy-button';
@@ -36,7 +37,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
       };
     })(btn, code));
-    block.appendChild(btn);
+    toolbar.appendChild(btn);
+    block.insertBefore(toolbar, block.firstChild);
   }
 });
 </script>

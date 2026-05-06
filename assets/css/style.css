@@ -534,50 +534,57 @@ a {
   overflow-wrap: anywhere;
 }
 
-/* Copy button */
+/* Code block toolbar */
+.post .highlight .code-block-toolbar {
+  min-height: 2.35rem;
+  padding: 0.35rem 0.55rem 0.35rem 0.85rem;
+  border-bottom: 1px solid var(--color-outline-variant);
+  background: var(--color-surface-container-low);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.post .highlight .code-block-lang {
+  min-width: 0;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-on-surface-variant);
+  opacity: 0.65;
+  font-family: "Inter", sans-serif;
+  line-height: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .post .highlight .copy-button {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-  background: var(--color-surface-container);
+  flex: 0 0 auto;
+  width: 1.8rem;
+  height: 1.8rem;
+  background: transparent;
   color: var(--color-on-surface-variant);
   border: none;
   border-radius: 0.25rem;
-  padding: 0.25rem;
+  padding: 0;
   cursor: pointer;
-  opacity: 0;
-  transition: opacity 0.2s;
+  transition: background-color 0.2s, color 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.post .highlight:hover .copy-button {
-  opacity: 1;
-}
-
-@media (hover: none) {
-  .post .highlight .copy-button {
-    opacity: 1;
-  }
+.post .highlight .copy-button:hover,
+.post .highlight .copy-button:focus-visible {
+  background: var(--color-surface-container);
+  color: var(--color-on-surface);
+  outline: none;
 }
 
 .post .highlight .copy-button .material-symbols-outlined {
   font-size: 18px;
-}
-
-/* Language label */
-.post .highlight .lang-label {
-  position: absolute;
-  top: 0.25rem;
-  right: 2.5rem;
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--color-on-surface-variant);
-  opacity: 0.5;
-  font-family: "Inter", sans-serif;
-  pointer-events: none;
 }
 
 /* Mermaid diagrams */
