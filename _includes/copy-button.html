@@ -3,7 +3,24 @@ document.addEventListener('DOMContentLoaded', function() {
   var codeBlocks = document.querySelectorAll('.post .highlight');
   for (var i = 0; i < codeBlocks.length; i++) {
     var block = codeBlocks[i];
-    var code = block.querySelector('code');
+    var pre = null;
+    var hasToolbar = false;
+
+    for (var childIndex = 0; childIndex < block.children.length; childIndex++) {
+      var child = block.children[childIndex];
+      if (child.classList.contains('code-block-toolbar')) { hasToolbar = true; }
+      if (!pre && child.tagName === 'PRE') { pre = child; }
+    }
+    if (hasToolbar) continue;
+    if (!pre) continue;
+
+    var code = null;
+    for (var codeIndex = 0; codeIndex < pre.children.length; codeIndex++) {
+      if (pre.children[codeIndex].tagName === 'CODE') {
+        code = pre.children[codeIndex];
+        break;
+      }
+    }
     if (!code) continue;
 
     var classList = code.className.split(' ');
