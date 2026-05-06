@@ -534,50 +534,52 @@ a {
   overflow-wrap: anywhere;
 }
 
-/* Copy button */
-.post .highlight .copy-button {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-  background: var(--color-surface-container);
-  color: var(--color-on-surface-variant);
-  border: none;
-  border-radius: 0.25rem;
-  padding: 0.25rem;
-  cursor: pointer;
-  opacity: 0;
-  transition: opacity 0.2s;
+/* ── Code block header bar ── */
+
+.post .highlight .code-header {
   display: flex;
   align-items: center;
-  justify-content: center;
-}
-
-.post .highlight:hover .copy-button {
-  opacity: 1;
-}
-
-@media (hover: none) {
-  .post .highlight .copy-button {
-    opacity: 1;
-  }
-}
-
-.post .highlight .copy-button .material-symbols-outlined {
-  font-size: 18px;
-}
-
-/* Language label */
-.post .highlight .lang-label {
-  position: absolute;
-  top: 0.25rem;
-  right: 2.5rem;
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--color-on-surface-variant);
-  opacity: 0.5;
+  justify-content: space-between;
+  padding: 0.35rem 0.75rem 0.35rem 1rem;
+  background: var(--color-surface-container);
+  border-bottom: 1px solid var(--color-outline-variant);
   font-family: "Inter", sans-serif;
-  pointer-events: none;
+}
+
+.post .highlight .code-lang {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-on-surface-variant);
+  opacity: 0.7;
+}
+
+.post .highlight .code-header .copy-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: transparent;
+  color: var(--color-on-surface-variant);
+  border: 1px solid var(--color-outline-variant);
+  border-radius: 0.25rem;
+  padding: 0.15rem 0.5rem;
+  cursor: pointer;
+  font-size: 0.72rem;
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.post .highlight .code-header .copy-button:hover {
+  background: var(--color-surface-container-low);
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.post .highlight .code-header .copy-button .material-symbols-outlined {
+  font-size: 16px;
 }
 
 /* Mermaid diagrams */
