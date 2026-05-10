@@ -27,8 +27,10 @@ document.addEventListener('DOMContentLoaded', function() {
     var lang = '';
     var isMermaid = false;
     for (var j = 0; j < classList.length; j++) {
-      if (classList[j] === 'language-mermaid') { isMermaid = true; }
-      if (classList[j].indexOf('language-') === 0) { lang = classList[j].replace('language-', ''); }
+      var className = classList[j];
+      var lowerClassName = className.toLowerCase();
+      if (lowerClassName === 'language-mermaid') { isMermaid = true; }
+      if (lowerClassName.indexOf('language-') === 0) { lang = className.replace(/^language-/i, ''); }
     }
     if (isMermaid) continue;
 

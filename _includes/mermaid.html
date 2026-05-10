@@ -1,27 +1,41 @@
-{% if page.content contains "```mermaid" or content contains "language-mermaid" %}
+{% assign page_content_downcase = page.content | downcase %}
+{% assign rendered_content_downcase = content | downcase %}
+{% if page_content_downcase contains "```mermaid" or rendered_content_downcase contains "language-mermaid" %}
 <script type="module">
   import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
 
   var isDark = document.documentElement.classList.contains('dark');
 
-  // Convert Rouge-wrapped mermaid code blocks into <div class="mermaid">
-  document.querySelectorAll('.post .highlight').forEach(function(el) {
-    var code = el.querySelector('code.language-mermaid');
-    if (!code) return;
+  function isMermaidCode(code) {
+    if (!code) return false;
+    var lang = (code.getAttribute('data-lang') || '').toLowerCase();
+    if (lang === 'mermaid') return true;
+
+    return Array.prototype.some.call(code.classList, function(className) {
+      return className.toLowerCase() === 'language-mermaid';
+    });
+  }
+
+  function makeMermaidDiv(code) {
     var mermaidDiv = document.createElement('div');
     mermaidDiv.className = 'mermaid';
     mermaidDiv.textContent = code.textContent;
-    el.parentNode.replaceChild(mermaidDiv, el);
+    return mermaidDiv;
+  }
+
+  // Convert Rouge-wrapped mermaid code blocks into <div class="mermaid">
+  document.querySelectorAll('.post .highlight').forEach(function(el) {
+    var code = Array.prototype.find.call(el.querySelectorAll('code'), isMermaidCode);
+    if (!code) return;
+    el.parentNode.replaceChild(makeMermaidDiv(code), el);
   });
 
   // Also handle plain <pre><code class="language-mermaid"> blocks (non-Rouge)
-  document.querySelectorAll('.post pre code.language-mermaid').forEach(function(code) {
+  document.querySelectorAll('.post pre code').forEach(function(code) {
+    if (!isMermaidCode(code)) return;
     var pre = code.closest('pre');
     if (!pre) return;
-    var mermaidDiv = document.createElement('div');
-    mermaidDiv.className = 'mermaid';
-    mermaidDiv.textContent = code.textContent;
-    pre.parentNode.replaceChild(mermaidDiv, pre);
+    pre.parentNode.replaceChild(makeMermaidDiv(code), pre);
   });
 
   // Store original text for re-render on theme change
