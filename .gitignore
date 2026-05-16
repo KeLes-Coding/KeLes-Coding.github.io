@@ -1,2 +1,8 @@
 info/
 .claude/
+vendor/bundle/
+.bundle/
+_site/
+.jekyll-cache/
+Gemfile
+Gemfile.lock
