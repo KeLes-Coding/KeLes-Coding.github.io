@@ -251,6 +251,7 @@ a {
 
 .post {
   color: var(--color-on-surface);
+  min-width: 0;
   overflow-wrap: anywhere;
 }
 
@@ -893,10 +894,13 @@ a {
 .post .related-record {
   border: 1px solid var(--color-outline-variant);
   border-radius: 1rem;
+  box-sizing: border-box;
   color: var(--color-on-surface);
   display: block;
+  min-width: 0;
   padding: 1.25rem;
   text-decoration: none;
+  width: 100%;
   background: var(--color-surface);
   transition: border-color 0.2s, background-color 0.2s, box-shadow 0.2s;
   box-shadow: 0 1px 2px rgba(0,0,0,0.04);
@@ -919,6 +923,7 @@ a {
   font-weight: 500;
   line-height: 1.35;
   margin-bottom: 0.35rem;
+  overflow-wrap: anywhere;
 }
 
 .related-record-title {
@@ -926,6 +931,7 @@ a {
   font-size: 1.1rem;
   font-weight: 600;
   line-height: 1.35;
+  overflow-wrap: anywhere;
   transition: color 0.2s;
 }
 
@@ -938,6 +944,7 @@ a {
   font-size: 0.88rem;
   line-height: 1.55;
   margin-top: 0.5rem;
+  overflow-wrap: anywhere;
 }
 
 .related-record-missing {
@@ -950,6 +957,10 @@ a {
   display: grid;
   grid-template-columns: 240px minmax(0, 1fr) 220px;
   gap: 2rem;
+}
+
+.post-layout > * {
+  min-width: 0;
 }
 
 /* Hide sidebars on small screens */
@@ -1155,14 +1166,17 @@ a {
 }
 
 .post-bottom-nav-card {
+  box-sizing: border-box;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 0.5rem;
+  min-width: 0;
   padding: 1rem 1.25rem;
   border: 1px solid var(--color-outline-variant);
   border-radius: 0.75rem;
   text-decoration: none;
+  width: 100%;
   background: var(--color-surface);
   transition: border-color 0.2s, background-color 0.2s, box-shadow 0.2s;
 }

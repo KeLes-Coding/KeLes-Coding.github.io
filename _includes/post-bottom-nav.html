@@ -1,19 +1,25 @@
 {% assign visible_posts = site.posts | where_exp: "p", "p.visible != false" %}
+{% assign current_file = include.post.path | split: "/" | last %}
+{% assign current_folder = include.post.path | replace: current_file, "" %}
 {% assign older_post = null %}
 {% assign newer_post = null %}
 {% assign last_post = null %}
 {% assign find_older = false %}
 
 {% for p in visible_posts %}
-  {% if find_older %}
-    {% assign older_post = p %}
-    {% assign find_older = false %}
+  {% assign candidate_file = p.path | split: "/" | last %}
+  {% assign candidate_folder = p.path | replace: candidate_file, "" %}
+  {% if candidate_folder == current_folder %}
+    {% if find_older %}
+      {% assign older_post = p %}
+      {% assign find_older = false %}
+    {% endif %}
+    {% if p.url == include.post.url %}
+      {% assign newer_post = last_post %}
+      {% assign find_older = true %}
+    {% endif %}
+    {% assign last_post = p %}
   {% endif %}
-  {% if p.url == include.post.url %}
-    {% assign newer_post = last_post %}
-    {% assign find_older = true %}
-  {% endif %}
-  {% assign last_post = p %}
 {% endfor %}
 
 {% if older_post or newer_post %}

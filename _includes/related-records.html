@@ -9,63 +9,55 @@
 {% endcomment %}
 {% if include.post.related_records %}
   {% assign visible_posts = site.posts | where_exp: "p", "p.visible != false" %}
-  <section class="related-records" aria-labelledby="related-records-title">
-    <div class="related-records-kicker">Related Records</div>
-    <div class="related-records-list">
-      {% for record in include.post.related_records %}
-        {% assign normalized_path = record.path | replace: "\\", "/" | remove_first: "./" %}
-        {% assign normalized_doc_path = normalized_path %}
-        {% if normalized_path contains "doc/v0.1/" %}
-          {% assign normalized_doc_path = normalized_path | replace_first: "doc/v0.1/", "_posts/Orbit 开发日志/v0.1/" %}
-        {% elsif normalized_path contains "doc/note/" %}
-          {% assign normalized_doc_path = normalized_path | replace_first: "doc/note/", "_posts/Orbit 开发日志/note/" %}
+  {% capture related_records_markup %}
+    {% for record in include.post.related_records %}
+      {% assign normalized_path = record.path | replace: "\\", "/" | remove_first: "./" %}
+      {% assign normalized_doc_path = normalized_path %}
+      {% if normalized_path contains "doc/v0.1/" %}
+        {% assign normalized_doc_path = normalized_path | replace_first: "doc/v0.1/", "_posts/Orbit 开发日志/v0.1/" %}
+      {% elsif normalized_path contains "doc/note/" %}
+        {% assign normalized_doc_path = normalized_path | replace_first: "doc/note/", "_posts/Orbit 开发日志/note/" %}
+      {% endif %}
+      {% assign normalized_name = normalized_doc_path | split: "/" | last %}
+      {% assign normalized_name_key = normalized_name | split: "." | first %}
+      {% assign related_post = nil %}
+      {% for candidate in visible_posts %}
+        {% assign candidate_path = candidate.path | replace: "\\", "/" %}
+        {% assign candidate_name = candidate_path | split: "/" | last %}
+        {% assign candidate_name_key = candidate_name | split: "." | first %}
+        {% if candidate_path == normalized_path or candidate_path == normalized_doc_path or candidate_name == normalized_name or candidate_name_key == normalized_name_key %}
+          {% assign related_post = candidate %}
+          {% break %}
         {% endif %}
-        {% assign normalized_name = normalized_path | split: "/" | last %}
-        {% assign related_post = nil %}
-        {% for candidate in visible_posts %}
-          {% assign candidate_path = candidate.path | replace: "\\", "/" %}
-          {% assign candidate_name = candidate_path | split: "/" | last %}
-          {% if candidate_path == normalized_path or candidate_path == normalized_doc_path or candidate_name == normalized_name %}
-            {% assign related_post = candidate %}
+      {% endfor %}
+
+      {% if related_post %}
+        {% assign path_parts = related_post.path | split: "/" %}
+        {% assign folder_segments = "" | split: "" %}
+        {% for segment in path_parts %}
+          {% if forloop.index0 > 0 and forloop.last == false %}
+            {% assign folder_segments = folder_segments | push: segment %}
           {% endif %}
         {% endfor %}
 
-        {% if related_post %}
-          {% assign path_parts = related_post.path | split: "/" %}
-          {% assign folder_segments = "" | split: "" %}
-          {% for segment in path_parts %}
-            {% if forloop.index0 > 0 and forloop.last == false %}
-              {% assign folder_segments = folder_segments | push: segment %}
+        <a class="related-record" href="{{ related_post.url | relative_url }}">
+          <span class="related-record-title">{{ related_post.title }}</span>
+          <span class="related-record-meta">
+            {{ related_post.date | date: "%Y-%m-%d" }}
+            {% if folder_segments.size > 0 %}
+              <span aria-hidden="true">·</span>
+              {{ folder_segments | join: " / " }}
             {% endif %}
-          {% endfor %}
+          </span>
+          {% if record.reason %}
+            <span class="related-record-reason">{{ record.reason }}</span>
+          {% endif %}
+        </a>
+      {% endif %}
+    {% endfor %}
+  {% endcapture %}
 
-          <a class="related-record" href="{{ related_post.url | relative_url }}">
-            <span class="related-record-title">{{ related_post.title }}</span>
-            <span class="related-record-meta">
-              {{ related_post.date | date: "%Y-%m-%d" }}
-              {% if folder_segments.size > 0 %}
-                <span aria-hidden="true">·</span>
-                {{ folder_segments | join: " / " }}
-              {% endif %}
-            </span>
-            {% if record.reason %}
-              <span class="related-record-reason">{{ record.reason }}</span>
-            {% endif %}
-          </a>
-        {% else %}
-          <div class="related-record related-record-missing">
-            <span class="related-record-title">{{ normalized_path }}</span>
-            <span class="related-record-meta">未找到对应文章</span>
-            {% if record.reason %}
-              <span class="related-record-reason">{{ record.reason }}</span>
-            {% endif %}
-          </div>
-        {% endif %}
-      {% endfor %}
-    </div>
-  </section>
-
-  <script type="application/json" id="related-record-citation-data">
+  {% capture related_record_citations %}
   [
     {% assign emitted_citation = false %}
     {% for record in include.post.related_records %}
@@ -76,13 +68,16 @@
       {% elsif normalized_path contains "doc/note/" %}
         {% assign normalized_doc_path = normalized_path | replace_first: "doc/note/", "_posts/Orbit 开发日志/note/" %}
       {% endif %}
-      {% assign normalized_name = normalized_path | split: "/" | last %}
+      {% assign normalized_name = normalized_doc_path | split: "/" | last %}
+      {% assign normalized_name_key = normalized_name | split: "." | first %}
       {% assign related_post = nil %}
       {% for candidate in visible_posts %}
         {% assign candidate_path = candidate.path | replace: "\\", "/" %}
         {% assign candidate_name = candidate_path | split: "/" | last %}
-        {% if candidate_path == normalized_path or candidate_path == normalized_doc_path or candidate_name == normalized_name %}
+        {% assign candidate_name_key = candidate_name | split: "." | first %}
+        {% if candidate_path == normalized_path or candidate_path == normalized_doc_path or candidate_name == normalized_name or candidate_name_key == normalized_name_key %}
           {% assign related_post = candidate %}
+          {% break %}
         {% endif %}
       {% endfor %}
       {% if record.label and related_post %}
@@ -98,7 +93,18 @@
       {% endif %}
     {% endfor %}
   ]
-  </script>
+  {% endcapture %}
+
+  {% assign related_records_markup_stripped = related_records_markup | strip %}
+  {% if related_records_markup_stripped != "" %}
+  <section class="related-records" aria-labelledby="related-records-title">
+    <div class="related-records-kicker">Related Records</div>
+    <div class="related-records-list">
+      {{ related_records_markup_stripped }}
+    </div>
+  </section>
+
+  <script type="application/json" id="related-record-citation-data">{{ related_record_citations | strip }}</script>
 
   <script>
   document.addEventListener('DOMContentLoaded', function() {
@@ -216,4 +222,5 @@
     post.insertBefore(section, relatedRecords || null);
   });
   </script>
+  {% endif %}
 {% endif %}
