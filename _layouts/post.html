@@ -5,17 +5,23 @@ layout: default
 <div class="post-layout">
   <aside class="post-sidebar-left">
     {% include post-nav.html post=page %}
+    {% include related-records.html post=page %}
   </aside>
 
   <article class="post post-content-area">
     <header class="post-header">
       {% include post_breadcrumb.html post=page %}
       <h1 class="post-title">{{ page.title }}</h1>
+      {% assign chars = content | strip_html | size %}
+      {% assign minutes = chars | divided_by: 500 | plus: 1 %}
+      {% if minutes < 1 %}{% assign minutes = 1 %}{% endif %}
       <div class="post-meta">
         <span class="material-symbols-outlined" style="font-size:16px">calendar_today</span>
         <time datetime="{{ page.date | date: '%Y-%m-%d' }}">{{ page.date | date: "%B %d, %Y" }}</time>
         <span class="material-symbols-outlined" style="font-size:16px">person</span>
         <span>{{ page.author | default: site.author }}</span>
+        <span class="material-symbols-outlined" style="font-size:16px">schedule</span>
+        <span>约 {{ minutes }} min read</span>
       </div>
       {% include source-links.html post=page %}
     </header>
@@ -25,7 +31,7 @@ layout: default
     {% include markdown-enhancements.html %}
     {% include mermaid.html %}
     {% include katex.html %}
-    {% include related-records.html post=page %}
+    {% include post-bottom-nav.html post=page %}
     <a href="{{ '/blog/' | relative_url }}" class="back-link mt-10 inline-flex items-center gap-2 text-sm uppercase tracking-[0.16em] text-on-surface-variant transition-colors duration-200 hover:text-primary">&larr; Back to blog</a>
   </article>
 

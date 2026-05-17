@@ -112,6 +112,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="{{ '/icon/favicon-32.png' | relative_url }}">
 </head>
 <body class="min-h-screen bg-surface-container-lowest font-body-md text-on-surface antialiased">
+  <div id="reading-progress" class="fixed top-0 left-0 z-[60] h-[3px] w-0 bg-accent transition-[width] duration-100 ease-out"></div>
   {% assign current_url = page.url | replace: 'index.html', '' %}
   <div class="flex min-h-screen flex-col">
     <nav class="sticky top-0 z-50 w-full border-b border-neutral-200 bg-white px-6 py-4 md:px-8 dark:border-neutral-800 dark:bg-neutral-950">
@@ -125,7 +126,10 @@
           <a class="{% if current_url == '/blog/' %}border-b border-neutral-900 pb-1 font-bold text-neutral-900 dark:border-neutral-50 dark:text-neutral-50{% else %}text-neutral-400 transition-colors duration-200 hover:text-neutral-900 dark:text-neutral-600 dark:hover:text-neutral-50{% endif %}" href="{{ '/blog/' | relative_url }}">Blog</a>
           <a class="{% if current_url == '/about/' %}border-b border-neutral-900 pb-1 font-bold text-neutral-900 dark:border-neutral-50 dark:text-neutral-50{% else %}text-neutral-400 transition-colors duration-200 hover:text-neutral-900 dark:text-neutral-600 dark:hover:text-neutral-50{% endif %}" href="{{ '/about/' | relative_url }}">About</a>
         </div>
-        <div class="flex items-center gap-4">
+        <div class="flex items-center gap-3 md:gap-4">
+          <button id="mobile-menu-btn" class="md:hidden flex items-center justify-center w-9 h-9 rounded-full text-neutral-500 transition-colors duration-200 hover:text-neutral-900 hover:bg-surface-container-low dark:text-neutral-400 dark:hover:text-neutral-50 dark:hover:bg-surface-container" type="button" aria-label="Toggle menu">
+            <span class="material-symbols-outlined text-2xl">menu</span>
+          </button>
           <div class="flex items-center gap-2">
             <label for="global-search" class="cursor-pointer">
               <span class="material-symbols-outlined text-xl transition-colors duration-200 hover:text-neutral-900 dark:hover:text-neutral-50 text-neutral-400 dark:text-neutral-600">search</span>
@@ -139,6 +143,13 @@
         </div>
       </div>
     </nav>
+    <div id="mobile-menu-panel" class="fixed inset-x-0 top-0 z-40 bg-white/95 backdrop-blur-sm border-b border-neutral-200 px-6 pb-6 pt-[72px] shadow-lg transition-all duration-300 ease-out opacity-0 -translate-y-full pointer-events-none dark:bg-neutral-950/95 dark:border-neutral-800" aria-hidden="true">
+      <nav class="flex flex-col space-y-0 mx-auto max-w-[1120px]">
+        <a class="mobile-nav-link block py-3 px-2 text-sm uppercase tracking-wider transition-colors duration-200 border-l-2 {% if current_url == '/' %}text-neutral-900 dark:text-neutral-50 border-accent font-bold{% else %}text-neutral-400 dark:text-neutral-600 border-transparent hover:border-accent hover:text-neutral-900 dark:hover:text-neutral-50{% endif %}" href="{{ '/' | relative_url }}">Home</a>
+        <a class="mobile-nav-link block py-3 px-2 text-sm uppercase tracking-wider transition-colors duration-200 border-l-2 {% if current_url == '/blog/' %}text-neutral-900 dark:text-neutral-50 border-accent font-bold{% else %}text-neutral-400 dark:text-neutral-600 border-transparent hover:border-accent hover:text-neutral-900 dark:hover:text-neutral-50{% endif %}" href="{{ '/blog/' | relative_url }}">Blog</a>
+        <a class="mobile-nav-link block py-3 px-2 text-sm uppercase tracking-wider transition-colors duration-200 border-l-2 {% if current_url == '/about/' %}text-neutral-900 dark:text-neutral-50 border-accent font-bold{% else %}text-neutral-400 dark:text-neutral-600 border-transparent hover:border-accent hover:text-neutral-900 dark:hover:text-neutral-50{% endif %}" href="{{ '/about/' | relative_url }}">About</a>
+      </nav>
+    </div>
     <main class="flex-grow px-6 py-16 md:px-12">
       <div class="mx-auto w-full max-w-[1120px]">
         {{ content }}
@@ -154,6 +165,9 @@
       </div>
     </footer>
   </div>
+  <button id="back-to-top" class="fixed bottom-6 right-6 z-50 flex h-11 w-11 items-center justify-center rounded-full bg-surface-container-high border border-outline-variant text-on-surface-variant opacity-0 translate-y-4 pointer-events-none transition-all duration-300 ease-out shadow-md hover:bg-surface-container-highest hover:text-primary hover:border-outline hover:shadow-lg focus-visible:opacity-100 focus-visible:translate-y-0 focus-visible:pointer-events-auto" type="button" aria-label="Back to top">
+    <span class="material-symbols-outlined text-xl">arrow_upward</span>
+  </button>
   <script>
     const themeToggleBtn = document.getElementById("theme-toggle");
     const htmlElement = document.documentElement;
@@ -177,6 +191,77 @@
         globalSearchInput.focus();
       });
     }
+
+    // ── Reading Progress Bar ──
+    const progressBar = document.getElementById('reading-progress');
+    function updateProgress() {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = docHeight > 0 ? Math.min((scrollTop / docHeight) * 100, 100) : 0;
+      progressBar.style.width = progress + '%';
+    }
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    updateProgress();
+
+    // ── Back to Top Button ──
+    const backToTopBtn = document.getElementById('back-to-top');
+    function toggleBackToTop() {
+      const show = window.scrollY > 400;
+      backToTopBtn.classList.toggle('opacity-100', show);
+      backToTopBtn.classList.toggle('translate-y-0', show);
+      backToTopBtn.classList.toggle('opacity-0', !show);
+      backToTopBtn.classList.toggle('translate-y-4', !show);
+      backToTopBtn.classList.toggle('pointer-events-none', !show);
+      backToTopBtn.classList.toggle('pointer-events-auto', show);
+    }
+    window.addEventListener('scroll', toggleBackToTop, { passive: true });
+    toggleBackToTop();
+
+    backToTopBtn.addEventListener('click', function() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // ── Mobile Menu ──
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenuPanel = document.getElementById('mobile-menu-panel');
+    const mobileMenuLinks = mobileMenuPanel.querySelectorAll('.mobile-nav-link');
+    let menuOpen = false;
+
+    function closeMenu() {
+      menuOpen = false;
+      mobileMenuPanel.classList.add('opacity-0', '-translate-y-full', 'pointer-events-none');
+      mobileMenuPanel.classList.remove('opacity-100', 'translate-y-0', 'pointer-events-auto');
+      mobileMenuPanel.setAttribute('aria-hidden', 'true');
+      mobileMenuBtn.querySelector('.material-symbols-outlined').textContent = 'menu';
+      document.body.style.overflow = '';
+    }
+
+    function openMenu() {
+      menuOpen = true;
+      mobileMenuPanel.classList.remove('opacity-0', '-translate-y-full', 'pointer-events-none');
+      mobileMenuPanel.classList.add('opacity-100', 'translate-y-0', 'pointer-events-auto');
+      mobileMenuPanel.setAttribute('aria-hidden', 'false');
+      mobileMenuBtn.querySelector('.material-symbols-outlined').textContent = 'close';
+      document.body.style.overflow = 'hidden';
+    }
+
+    mobileMenuBtn.addEventListener('click', function() {
+      if (menuOpen) { closeMenu(); } else { openMenu(); }
+    });
+
+    mobileMenuLinks.forEach(function(link) {
+      link.addEventListener('click', closeMenu);
+    });
+
+    // Close menu on Escape
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && menuOpen) { closeMenu(); }
+    });
+
+    // Close menu when clicking overlay backdrop (outside links)
+    mobileMenuPanel.addEventListener('click', function(e) {
+      if (e.target === mobileMenuPanel) { closeMenu(); }
+    });
   </script>
 </body>
 </html>

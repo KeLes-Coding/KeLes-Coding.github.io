@@ -59,11 +59,11 @@ document.addEventListener('DOMContentLoaded', function() {
     var btn = document.createElement('button');
     btn.className = 'copy-button';
     btn.setAttribute('aria-label', 'Copy code');
-    btn.innerHTML = '<span class="material-symbols-outlined">content_copy</span> COPY';
+    btn.innerHTML = '<span class="material-symbols-outlined">content_copy</span>';
     btn.addEventListener('click', (function(btn, code) {
       return function() {
         navigator.clipboard.writeText(code.textContent).then(function() {
-          btn.innerHTML = '<span class="material-symbols-outlined">check</span> COPIED';
+          btn.innerHTML = '<span class="material-symbols-outlined">check</span>';
           setTimeout(function() {
             btn.innerHTML = '<span class="material-symbols-outlined">content_copy</span>';
           }, 2000);
@@ -72,6 +72,26 @@ document.addEventListener('DOMContentLoaded', function() {
     })(btn, code));
     toolbar.appendChild(btn);
     block.insertBefore(toolbar, block.firstChild);
+
+    // Line numbers — skip for text/plaintext/no-language blocks
+    var skipLineNums = !lang || lang.toLowerCase() === 'text' || lang.toLowerCase() === 'plaintext';
+    if (!skipLineNums) {
+      var lines = code.textContent.split('\n');
+      if (lines.length > 0 && lines[lines.length - 1] === '') {
+        lines.pop();
+      }
+
+      var lineNums = document.createElement('div');
+      lineNums.className = 'code-block-linenums';
+      for (var l = 0; l < lines.length; l++) {
+        var numSpan = document.createElement('span');
+        numSpan.textContent = l + 1;
+        lineNums.appendChild(numSpan);
+      }
+
+      block.classList.add('has-linenums');
+      block.insertBefore(lineNums, pre);
+    }
   }
 });
 </script>

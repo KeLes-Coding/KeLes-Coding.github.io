@@ -1,8 +1,8 @@
-/* Code blocks are always dark, like the designer's template */
+/* Code blocks — theme-aware, dark by default */
 .highlight {
-  background: #000000;
+  background: var(--syntax-bg);
   border: none;
-  border-radius: 1rem;
+  border-radius: 0.5rem;
   position: relative;
   overflow: hidden;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12);
@@ -25,11 +25,36 @@
 
 .highlight code,
 .highlight pre {
-  color: #e5e7eb;
+  color: var(--syntax-text);
 }
 
-/* Rouge token palette — dark background always */
+/* Syntax token palette */
 :root {
+  --syntax-bg: #f8f8f9;
+  --syntax-surface: #eaeaec;
+  --syntax-text: #383a42;
+  --syntax-border: rgba(0,0,0,0.07);
+  --syntax-comment: #a0a1a7;
+  --syntax-keyword: #a626a4;
+  --syntax-string: #50a14f;
+  --syntax-number: #986801;
+  --syntax-function: #4078f2;
+  --syntax-type: #c18401;
+  --syntax-variable: #e45649;
+  --syntax-operator: #a626a4;
+  --syntax-punctuation: #383a42;
+  --syntax-preprocessor: #e45649;
+  --syntax-added: #50a14f;
+  --syntax-deleted: #e45649;
+  --syntax-line-number: rgba(0,0,0,0.18);
+  --syntax-line-highlight: rgba(0,0,0,0.04);
+}
+
+.dark {
+  --syntax-bg: #000000;
+  --syntax-surface: #2f3131;
+  --syntax-text: #e5e7eb;
+  --syntax-border: rgba(255,255,255,0.08);
   --syntax-comment: #9aa4b2;
   --syntax-keyword: #d6a4ff;
   --syntax-string: #78dba9;
@@ -42,6 +67,8 @@
   --syntax-preprocessor: #ff9b9b;
   --syntax-added: #7ee2a8;
   --syntax-deleted: #ff9b92;
+  --syntax-line-number: rgba(255,255,255,0.22);
+  --syntax-line-highlight: rgba(255,255,255,0.08);
 }
 
 /* Comments */
@@ -161,7 +188,7 @@
 }
 
 .highlight .gu {
-  color: rgba(255,255,255,0.5);
+  color: var(--syntax-line-number);
 }
 
 /* SQL fences are common in design notes; make Rouge's SQL tokens more distinct. */
@@ -206,14 +233,14 @@
 
 /* Line numbers */
 .highlight .linenos {
-  color: rgba(255,255,255,0.4);
+  color: var(--syntax-line-number);
   padding-right: 0.75rem;
-  border-right: 1px solid rgba(255,255,255,0.12);
+  border-right: 1px solid var(--syntax-border);
   margin-right: 0.75rem;
   user-select: none;
 }
 
 /* Line highlight */
 .highlight .hll {
-  background: rgba(255,255,255,0.08);
+  background: var(--syntax-line-highlight);
 }

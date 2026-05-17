@@ -1,0 +1,43 @@
+{% assign visible_posts = site.posts | where_exp: "p", "p.visible != false" %}
+{% assign older_post = null %}
+{% assign newer_post = null %}
+{% assign last_post = null %}
+{% assign find_older = false %}
+
+{% for p in visible_posts %}
+  {% if find_older %}
+    {% assign older_post = p %}
+    {% assign find_older = false %}
+  {% endif %}
+  {% if p.url == include.post.url %}
+    {% assign newer_post = last_post %}
+    {% assign find_older = true %}
+  {% endif %}
+  {% assign last_post = p %}
+{% endfor %}
+
+{% if older_post or newer_post %}
+<nav class="post-bottom-nav" aria-label="Adjacent posts">
+  <div class="post-bottom-nav-grid">
+    {% if older_post %}
+      <a class="post-bottom-nav-card prev" href="{{ older_post.url | relative_url }}">
+        <span class="post-bottom-nav-label">上一篇</span>
+        <span class="material-symbols-outlined post-bottom-nav-arrow">arrow_back</span>
+        <span class="post-bottom-nav-title">{{ older_post.title }}</span>
+      </a>
+    {% else %}
+      <div class="post-bottom-nav-card placeholder"></div>
+    {% endif %}
+
+    {% if newer_post %}
+      <a class="post-bottom-nav-card next" href="{{ newer_post.url | relative_url }}">
+        <span class="post-bottom-nav-label">下一篇</span>
+        <span class="material-symbols-outlined post-bottom-nav-arrow">arrow_forward</span>
+        <span class="post-bottom-nav-title">{{ newer_post.title }}</span>
+      </a>
+    {% else %}
+      <div class="post-bottom-nav-card placeholder"></div>
+    {% endif %}
+  </div>
+</nav>
+{% endif %}
