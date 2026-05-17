@@ -1,48 +1,35 @@
+/* Code blocks are always dark, like the designer's template */
 .highlight {
-  background: var(--color-surface-container-low);
-  border: 1px solid var(--color-outline-variant);
-  border-radius: 0.5rem;
+  background: #000000;
+  border: none;
+  border-radius: 1rem;
   position: relative;
   overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12);
 }
 
 .highlight pre {
   margin: 0;
   border: none;
-  padding: 1rem 1.1rem;
+  padding: 1rem 1.25rem;
   background: transparent;
   overflow-x: auto;
-  font-size: 0.92rem;
+  font-size: 0.875rem;
   line-height: 1.55;
+  font-family: "JetBrains Mono", Consolas, "SFMono-Regular", Menlo, monospace;
 }
 
 .highlight code {
-  font-family: Consolas, "SFMono-Regular", Menlo, monospace;
+  font-family: "JetBrains Mono", Consolas, "SFMono-Regular", Menlo, monospace;
 }
 
 .highlight code,
 .highlight pre {
-  color: var(--syntax-variable);
+  color: #e5e7eb;
 }
 
-/* Rouge token palette */
-
+/* Rouge token palette — dark background always */
 :root {
-  --syntax-comment: #6f7782;
-  --syntax-keyword: #8f2fbb;
-  --syntax-string: #0f7b4f;
-  --syntax-number: #b35c00;
-  --syntax-function: #0757a6;
-  --syntax-type: #9a3a00;
-  --syntax-variable: #1f2933;
-  --syntax-operator: #7c3aed;
-  --syntax-punctuation: #59636e;
-  --syntax-preprocessor: #a33a3a;
-  --syntax-added: #147d46;
-  --syntax-deleted: #b42318;
-}
-
-.dark {
   --syntax-comment: #9aa4b2;
   --syntax-keyword: #d6a4ff;
   --syntax-string: #78dba9;
@@ -174,7 +161,7 @@
 }
 
 .highlight .gu {
-  color: var(--color-on-surface-variant);
+  color: rgba(255,255,255,0.5);
 }
 
 /* SQL fences are common in design notes; make Rouge's SQL tokens more distinct. */
@@ -219,14 +206,14 @@
 
 /* Line numbers */
 .highlight .linenos {
-  color: var(--color-outline);
+  color: rgba(255,255,255,0.4);
   padding-right: 0.75rem;
-  border-right: 1px solid var(--color-outline-variant);
+  border-right: 1px solid rgba(255,255,255,0.12);
   margin-right: 0.75rem;
   user-select: none;
 }
 
 /* Line highlight */
 .highlight .hll {
-  background: var(--color-surface-container-high);
+  background: rgba(255,255,255,0.08);
 }

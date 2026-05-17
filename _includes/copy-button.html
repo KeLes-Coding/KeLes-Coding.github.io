@@ -23,14 +23,28 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     if (!code) continue;
 
-    var classList = code.className.split(' ');
+    // Find language from code element or outer wrapper (Rogue puts language-* on outer div)
     var lang = '';
     var isMermaid = false;
-    for (var j = 0; j < classList.length; j++) {
-      var className = classList[j];
-      var lowerClassName = className.toLowerCase();
-      if (lowerClassName === 'language-mermaid') { isMermaid = true; }
-      if (lowerClassName.indexOf('language-') === 0) { lang = className.replace(/^language-/i, ''); }
+    var sources = [code.className];
+    if (block.parentElement && block.parentElement !== block) {
+      sources.push(block.parentElement.className);
+    }
+    for (var s = 0; s < sources.length; s++) {
+      var classList = sources[s].split(' ');
+      for (var j = 0; j < classList.length; j++) {
+        var className = classList[j];
+        var lowerClassName = className.toLowerCase();
+        if (lowerClassName === 'language-mermaid') { isMermaid = true; }
+        if (lowerClassName.indexOf('language-') === 0) {
+          lang = className.replace(/^language-/i, '');
+          // Capitalize first letter for display
+          lang = lang.charAt(0).toUpperCase() + lang.slice(1);
+          // Map common Rouge language names to nicer display names
+          var langMap = { 'Cpp': 'C++', 'Css': 'CSS', 'Scss': 'SCSS', 'Js': 'JavaScript', 'Ts': 'TypeScript', 'Tsx': 'TSX', 'Jsx': 'JSX', 'Sh': 'Shell', 'Bash': 'Bash', 'Zsh': 'Zsh', 'Sql': 'SQL', 'Yml': 'YAML', 'Yaml': 'YAML', 'Ml': 'OCaml', 'Rs': 'Rust', 'Py': 'Python', 'Rb': 'Ruby', 'Go': 'Go', 'Java': 'Java', 'Php': 'PHP', 'Cs': 'C#', 'Fs': 'F#', 'Kt': 'Kotlin', 'Swift': 'Swift', 'R': 'R', 'M': 'MATLAB', 'Jl': 'Julia' };
+          lang = langMap[lang] || lang;
+        }
+      }
     }
     if (isMermaid) continue;
 
@@ -39,17 +53,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
     var label = document.createElement('span');
     label.className = 'code-block-lang';
-    label.textContent = lang || 'CODE';
+    label.innerHTML = '<span class="material-symbols-outlined" style="font-size:14px">code</span>' + (lang || 'CODE');
     toolbar.appendChild(label);
 
     var btn = document.createElement('button');
     btn.className = 'copy-button';
     btn.setAttribute('aria-label', 'Copy code');
-    btn.innerHTML = '<span class="material-symbols-outlined">content_copy</span>';
+    btn.innerHTML = '<span class="material-symbols-outlined">content_copy</span> COPY';
     btn.addEventListener('click', (function(btn, code) {
       return function() {
         navigator.clipboard.writeText(code.textContent).then(function() {
-          btn.innerHTML = '<span class="material-symbols-outlined">check</span>';
+          btn.innerHTML = '<span class="material-symbols-outlined">check</span> COPIED';
           setTimeout(function() {
             btn.innerHTML = '<span class="material-symbols-outlined">content_copy</span>';
           }, 2000);

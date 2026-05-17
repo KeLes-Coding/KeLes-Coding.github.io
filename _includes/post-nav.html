@@ -1,9 +1,9 @@
 {% comment %}
-  Full post file tree for the left sidebar. Counts include all descendant posts.
+  Full post file tree for the left sidebar. Matches the designer's template style.
 {% endcomment %}
 {% assign visible_posts = site.posts | where_exp: "p", "p.visible != false" %}
 
-<nav class="post-nav post-tree" id="post-file-tree" aria-label="Post file tree"></nav>
+<nav class="post-nav" id="post-file-tree" aria-label="Post file tree"></nav>
 
 <script>
 (function() {
@@ -43,17 +43,12 @@
   function compareByOrderThenDate(a, b) {
     var aOrder = extractOrderNumber(a.title || a.name);
     var bOrder = extractOrderNumber(b.title || b.name);
-
-    if (aOrder !== null && bOrder !== null && aOrder !== bOrder) {
-      return aOrder - bOrder;
-    }
+    if (aOrder !== null && bOrder !== null && aOrder !== bOrder) return aOrder - bOrder;
     if (aOrder !== null && bOrder === null) return -1;
     if (aOrder === null && bOrder !== null) return 1;
-
     var aDate = a.oldestDate || a.date || '';
     var bDate = b.oldestDate || b.date || '';
     if (aDate !== bDate) return aDate.localeCompare(bDate);
-
     return String(a.title || a.name).localeCompare(String(b.title || b.name), 'zh-Hans-CN');
   }
 
@@ -93,55 +88,93 @@
       node.children.some(containsCurrent);
   }
 
-  function renderPost(post, parent) {
-    var postTitle = post.title || post.fileTitle || 'Untitled';
+  function renderPost(post) {
+    var li = document.createElement('li');
     var link = document.createElement('a');
     link.className = 'post-nav-link' + (post.url === currentUrl ? ' active' : '');
     link.href = post.url;
-    link.textContent = postTitle;
-    parent.appendChild(link);
+    link.textContent = post.title || post.fileTitle || 'Untitled';
+    li.appendChild(link);
+    return li;
   }
 
-  function renderNode(node, parent, isRoot) {
-    if (isRoot) {
-      var title = document.createElement('div');
-      title.className = 'post-nav-title';
-      title.textContent = 'Posts';
-      var total = document.createElement('span');
-      total.className = 'post-tree-count';
-      total.textContent = node.count;
-      title.appendChild(total);
-      parent.appendChild(title);
+  function renderFolder(node) {
+    var li = document.createElement('li');
+    li.className = 'post-nav-folder-item';
+    if (containsCurrent(node)) li.classList.add('open');
+
+    var btn = document.createElement('button');
+    btn.className = 'post-nav-folder-btn';
+    btn.addEventListener('click', function() {
+      li.classList.toggle('open');
+    });
+
+    var iconSpan = document.createElement('span');
+    iconSpan.className = 'post-nav-folder-icon';
+    iconSpan.innerHTML = '<span class="material-symbols-outlined" style="font-size:16px">folder</span>';
+
+    var nameSpan = document.createElement('span');
+    nameSpan.className = 'post-nav-folder-name';
+    nameSpan.textContent = node.name;
+
+    var arrow = document.createElement('span');
+    arrow.className = 'post-nav-folder-arrow material-symbols-outlined';
+    arrow.textContent = 'chevron_right';
+
+    btn.appendChild(iconSpan);
+    btn.appendChild(nameSpan);
+    btn.appendChild(arrow);
+    li.appendChild(btn);
+
+    // Update icon based on open state
+    function updateIcon() {
+      var isOpen = li.classList.contains('open');
+      iconSpan.querySelector('.material-symbols-outlined').textContent = isOpen ? 'folder_open' : 'folder';
     }
+    var observer = new MutationObserver(updateIcon);
+    observer.observe(li, { attributes: true, attributeFilter: ['class'] });
+    updateIcon();
+
+    var subtree = document.createElement('ul');
+    subtree.className = 'post-nav-subtree';
 
     node.posts.forEach(function(post) {
-      renderPost(post, parent);
+      subtree.appendChild(renderPost(post));
     });
 
     node.children.forEach(function(child) {
-      var details = document.createElement('details');
-      details.className = 'post-tree-folder';
-      details.open = containsCurrent(child);
-
-      var summary = document.createElement('summary');
-      var name = document.createElement('span');
-      name.className = 'post-tree-folder-name';
-      name.textContent = child.name;
-      var count = document.createElement('span');
-      count.className = 'post-tree-count';
-      count.textContent = child.count;
-      summary.appendChild(name);
-      summary.appendChild(count);
-      details.appendChild(summary);
-
-      var body = document.createElement('div');
-      body.className = 'post-tree-children';
-      renderNode(child, body, false);
-      details.appendChild(body);
-      parent.appendChild(details);
+      subtree.appendChild(renderFolder(child));
     });
+
+    li.appendChild(subtree);
+    return li;
   }
 
-  renderNode(buildTree(posts), treeEl, true);
+  // Build the tree UI
+  var section = document.createElement('div');
+  section.className = 'post-nav-section';
+
+  var label = document.createElement('div');
+  label.className = 'post-nav-label';
+  label.textContent = 'Navigation';
+  section.appendChild(label);
+
+  var treeList = document.createElement('ul');
+  treeList.className = 'post-nav-tree';
+
+  var root = buildTree(posts);
+
+  // Render top-level folder children directly
+  root.children.forEach(function(child) {
+    treeList.appendChild(renderFolder(child));
+  });
+
+  // Render standalone posts (no folder)
+  root.posts.forEach(function(post) {
+    treeList.appendChild(renderPost(post));
+  });
+
+  section.appendChild(treeList);
+  treeEl.appendChild(section);
 })();
 </script>

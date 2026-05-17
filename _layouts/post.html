@@ -4,17 +4,19 @@ layout: default
 
 <div class="post-layout">
   <aside class="post-sidebar-left">
-    {% include post_breadcrumb.html post=page %}
     {% include post-nav.html post=page %}
   </aside>
 
   <article class="post post-content-area">
     <header class="post-header">
+      {% include post_breadcrumb.html post=page %}
+      <h1 class="post-title">{{ page.title }}</h1>
       <div class="post-meta">
-        <span>{{ page.date | date: "%Y-%m-%d" }}</span>
+        <span class="material-symbols-outlined" style="font-size:16px">calendar_today</span>
+        <time datetime="{{ page.date | date: '%Y-%m-%d' }}">{{ page.date | date: "%B %d, %Y" }}</time>
+        <span class="material-symbols-outlined" style="font-size:16px">person</span>
         <span>{{ page.author | default: site.author }}</span>
       </div>
-      <h1 class="post-title">{{ page.title }}</h1>
       {% include source-links.html post=page %}
     </header>
     {{ content }}

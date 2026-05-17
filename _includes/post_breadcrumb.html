@@ -7,13 +7,18 @@
   {% endif %}
 {% endfor %}
 {% if breadcrumb_count > 0 %}
-<div class="mb-2 flex flex-wrap items-center gap-1 text-xs font-bold uppercase tracking-[0.15em] text-on-surface-variant">
+<nav class="flex items-center gap-1.5 text-on-surface-variant font-body-sm text-sm mb-4">
+  <a class="hover:text-primary transition-colors duration-200" href="{{ '/blog/' | relative_url }}">Blog</a>
   {% for segment in segments %}
     {% assign idx = forloop.index0 %}
     {% if idx > 0 and forloop.last == false %}
-      {% if idx > 1 %}<span>&rsaquo;</span>{% endif %}
-      <a href="{{ '/blog/' | relative_url }}" class="transition-colors duration-200 hover:text-primary">{{ segment }}</a>
+      <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+      {% if forloop.rindex > 2 %}
+      <a class="hover:text-primary transition-colors duration-200" href="{{ '/blog/' | relative_url }}">{{ segment }}</a>
+      {% else %}
+      <span class="text-on-surface">{{ segment }}</span>
+      {% endif %}
     {% endif %}
   {% endfor %}
-</div>
+</nav>
 {% endif %}
